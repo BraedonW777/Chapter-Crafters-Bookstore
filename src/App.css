@@ -1,38 +1,56 @@
-.App {
-  text-align: center;
+/* src/App.css */
+
+.app {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+nav {
+  display: inline-block; 
+  justify-content: space-between; /* Push items to the ends */
+  align-items: center; /* Vertically center items */
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.nav-links {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
 }
 
-.App-link {
-  color: #61dafb;
+.nav-links li {
+  margin-right: 10px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.cart-link {
+  margin-left: 450px;
+  display: inline-block;
+}
+
+
+/*style the links*/
+.nav-links li a {
+  text-decoration: none;
+  color: #333;
+  border-bottom: 2px solid transparent; /* Hide the border by default */
+}
+
+.nav-links li a:hover {
+  border-bottom: 2px solid #333; /* Add border on hover */
+}
+
+.home {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.home h1 {
+  font-size: 36px;
+  margin-bottom: 20px;
+}
+
+.home p {
+  font-size: 18px;
+  color: #666;
 }
