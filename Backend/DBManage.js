@@ -110,7 +110,7 @@ db.serialize(() => {
     if (err) {
         console.error(err.message);
     }
-    console.log('Created Users Table');
+    console.log('Confirmed Users Table');
   });
 
   // Books table
@@ -118,7 +118,7 @@ db.serialize(() => {
     if (err) {
         console.error(err.message);
     }
-    console.log('Created Books Table');
+    console.log('Confirmed Books Table');
   });
 
   // Authors table
@@ -126,7 +126,7 @@ db.serialize(() => {
     if (err) {
         console.error(err.message);
     }
-    console.log('Created Authors Table');
+    console.log('Confirmed Authors Table');
   });
 
   // Genre table
@@ -134,7 +134,7 @@ db.serialize(() => {
     if (err) {
         console.error(err.message);
     }
-    console.log('Created Genre Table');
+    console.log('Confirmed Genre Table');
   });
 
   // Book_Categories table (composite primary key)
@@ -142,7 +142,7 @@ db.serialize(() => {
     if (err) {
         console.error(err.message);
     }
-    console.log('Created Book_Categories Table');
+    console.log('Confirmed Book_Categories Table');
   });
 
   // Inventory Tracking table
@@ -150,7 +150,7 @@ db.serialize(() => {
     if (err) {
         console.error(err.message);
     }
-    console.log('Created Inventory Table');
+    console.log('Confirmed Inventory Table');
   });
 
   // Cart table
@@ -158,7 +158,7 @@ db.serialize(() => {
     if (err) {
         console.error(err.message);
     }
-    console.log('Created Cart Table');
+    console.log('Confirmed Cart Table');
   });
 
   console.log('Tables created (if not already existed)');
