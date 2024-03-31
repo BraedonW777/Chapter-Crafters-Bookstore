@@ -2,6 +2,18 @@
 // move TablesCreate under !dbExists statement
 // Integrate information_schema.tables and information_schema.columns and datatypes checkinginto dbExists statement
 
+
+// Reference: https://dev.to/simonmackie/a-comprehensive-guide-to-using-sqlite-with-nodejs-549i
+// Create the database connection example: const sqlite3 = require('sqlite3').verbose();const db = new sqlite3.Database('mydatabase.db');
+// Connection allows CRUD
+// Basic query example: db.run("CREATE TABLE users (id INTEGER PRIMARY KEY, name TEXT)");
+// Other query methods: 
+// db.all("SELECT * FROM users", (err, rows) => {  if (err) {    console.error(err);  } else {    console.log(rows);  }});
+// db.serialize(() => {  db.run("BEGIN TRANSACTION");  db.run("INSERT INTO users (name) VALUES ('John')");  db.run("INSERT INTO users (name) VALUES ('Jane')");  db.run("COMMIT");});
+// Prepare Statements Syntax: const statement = db.prepare("INSERT INTO users (name) VALUES (?)");statement.run("John");statement.run("Jane");statement.finalize();
+// 
+
+
 const sqlite3 = require('sqlite3').verbose();
 const fs = require('fs');
 
@@ -19,38 +31,39 @@ databaseValidate.exports = {
     });
     },
     
-    if (dbExists) {};
-    function validateTableName(Users) {
-      const regex = /^[a-zA-Z_][a-zA-Z0-9_]*$/; // Allow alphanumeric characters and underscores
-      return regex.test(Users);
-    }
-    function validateTableName(Books) {
-      const regex = /^[a-zA-Z_][a-zA-Z0-9_]*$/; // Allow alphanumeric characters and underscores
-      return regex.test(Books);
-    }
-    function validateTableName(Authors) {
-      const regex = /^[a-zA-Z_][a-zA-Z0-9_]*$/; // Allow alphanumeric characters and underscores
-      return regex.test(Authors);
-    }
-    function validateTableName(Genre) {
-      const regex = /^[a-zA-Z_][a-zA-Z0-9_]*$/; // Allow alphanumeric characters and underscores
-      return regex.test(Genre);
-    }
-    function validateTableName(BookCategories) {
-      const regex = /^[a-zA-Z_][a-zA-Z0-9_]*$/; // Allow alphanumeric characters and underscores
-      return regex.test(BookCategories);
-    }
-    function validateTableName(Inventory) {
-      const regex = /^[a-zA-Z_][a-zA-Z0-9_]*$/; // Allow alphanumeric characters and underscores
-      return regex.test(Inventory);
-    }
-    function validateTableName(Cart) {
-      const regex = /^[a-zA-Z_][a-zA-Z0-9_]*$/; // Allow alphanumeric characters and underscores
-      return regex.test(Cart);
+    if (dbExists) {
+      function validateTableName(Users) {
+        const regex = /^[a-zA-Z_][a-zA-Z0-9_]*$/; // Allow alphanumeric characters and underscores
+        return regex.test(Users);
+      }
+      function validateTableName(Books) {
+        const regex = /^[a-zA-Z_][a-zA-Z0-9_]*$/; // Allow alphanumeric characters and underscores
+        return regex.test(Books);
+      }
+      function validateTableName(Authors) {
+        const regex = /^[a-zA-Z_][a-zA-Z0-9_]*$/; // Allow alphanumeric characters and underscores
+        return regex.test(Authors);
+      }
+      function validateTableName(Genre) {
+        const regex = /^[a-zA-Z_][a-zA-Z0-9_]*$/; // Allow alphanumeric characters and underscores
+        return regex.test(Genre);
+      }
+      function validateTableName(BookCategories) {
+        const regex = /^[a-zA-Z_][a-zA-Z0-9_]*$/; // Allow alphanumeric characters and underscores
+        return regex.test(BookCategories);
+      }
+      function validateTableName(Inventory) {
+        const regex = /^[a-zA-Z_][a-zA-Z0-9_]*$/; // Allow alphanumeric characters and underscores
+        return regex.test(Inventory);
+      }
+      function validateTableName(Cart) {
+        const regex = /^[a-zA-Z_][a-zA-Z0-9_]*$/; // Allow alphanumeric characters and underscores
+        return regex.test(Cart);
+      }
+    }else {
+      console.log('Database already exists');
     }
     db.close(); //Close connestion after creation
-    else {
-      console.log('Database already exists')
     };
 
 
