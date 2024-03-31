@@ -1,7 +1,7 @@
 //authorModel.js
 import db from '../db.js';
 
-//console.log("Inside authorModel.js");
+console.log("Inside authorModel.js");
 
 class Author {
     static async create(newAuthor) {
@@ -10,11 +10,24 @@ class Author {
                if (err) {
                     reject(err);
                 } else {
-                    const authorId = this.lastID; // Store the ID
-                    resolve(authorId);          // Resolve with the authorId
+                    const author_id = this.lastID; // Store the ID
+                    resolve(author_id);          // Resolve with the authorId
                 }
             }); 
         });
+    }
+
+    static async findByNames(firstName, lastName) {
+        return new Promise((resolve, reject) => {
+          const sql = 'SELECT * FROM Authors WHERE first_name = ? AND last_name = ?';
+          db.get(sql, [firstName, lastName], (err, row) => {
+            if (err) {
+              reject(err);
+            } else {
+              resolve(row); // Resolve with the row if found, otherwise undefined
+            }
+          });
+        });  
     }
 }
 
