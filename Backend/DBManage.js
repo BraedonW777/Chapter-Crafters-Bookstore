@@ -28,7 +28,7 @@
 // required 'require funciton'
 // const express = require("express");
 // const app = express();
-// Functions below are export syntax for multiple paths for perimeter of a square funtion.
+// Functions below are export syntax for multiple paths for perimeter and area of a square funtion.
 // exports.area = function (width) {
 //   return width * width;
 // };
