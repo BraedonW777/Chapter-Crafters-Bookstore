@@ -1,14 +1,14 @@
 import { query } from 'express';
-import db from '../db.js';
-import { Author } from './authorModel.js';
+import  openDB  from '../db.js';
+import Author  from './authorModel.js';
 
 console.log("Inside the bookModle");
 
 class Book {
-    static async create(newBook) {
+    async create(newBook) {
         console.log("Insert query in book.create", query);
         console.log("newbook Object:", newBook);
-        
+        const db = openDB();// Get the DB oject 
 
         return new Promise((resolve, reject) => {
             db.run("INSERT INTO Books (title, author_id, isbn, edition, cost) VALUES (?, ?, ?, ?, ?)", 
@@ -25,32 +25,40 @@ class Book {
        }); 
    } 
 
-    static async find() { // Function to fetch all books
+    async findByIsbn(isbn) {
+        console.log("inside the findByIsnb function");
+        const sql = 'SELECT book_id FROM Books WHERE isbn = ?';
+        const db = openDB();// Get the DB oject 
+        return new Promise((resolve, reject) => {
+            db.get(sql, [isbn], (err, row) => {
+                if (err) {
+                reject(err);
+            } else if (!row) { 
+                resolve(null); // Return null if the book is not found
+            } else {
+                resolve(row); // Return the book data, including book_id
+            }
+        });
+      });
+    }
+
+    async find() { // Function to fetch all books
+        const db = openDB();// Get the DB oject 
         return new Promise((resolve, reject) => { 
             db.all('SELECT * FROM Books', (err, rows) => {
                 if (err) {
+                    console.error("Error in Book.find():", err);
                     reject(err);
                 } else {
+                    console.log("Rows from Book.find():", rows);
                     resolve(rows); 
                 }
             }); 
         }); 
     } 
     
-    static async findByIsbn(isbn) {
-        return new Promise((resolve, reject) => {
-            const sql = 'SELECT * FROM Books WHERE isbn = ?'; 
-            db.get(sql, [isbn], (err, row) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(row); // Resolve with the row if found, otherwise undefined
-                }
-            }); 
-        }); 
-    }
-
-    static async findByID(id) {
+    async findByID(id) {
+        const db = openDB();// Get the DB oject 
         return new Promise((resolve, reject) => {
             const sql = 'SELECT * FROM Books WHERE book_id = ?'; 
             db.get(sql, [id], (err, row) => {
@@ -63,10 +71,10 @@ class Book {
         }); 
     }
 
-    async deleteByIsbn(isbn) { 
-        const sql = 'DELETE FROM books WHERE isbn = ?';
-        
+    async deleteByIsbn(isbn) {  
+        const db = openDB();// Get the DB oject      
         return new Promise((resolve, reject) => {
+            const sql = 'DELETE FROM books WHERE isbn = ?';
             db.run(sql, [isbn], function(err) {
                 if (err) {
                     reject(err); 
@@ -80,8 +88,47 @@ class Book {
         });
     }
 
+    async updateBook(book, updates) {
+              
+        const updateFields = [];
+        const parameters = [];
+      
+        if (updates.cost !== undefined) {
+          updateFields.push('cost = ?');
+          parameters.push(updates.cost);
+        }
+      
+        if (updates.quantity !== undefined) {
+          updateFields.push('quantity = ?');
+          parameters.push(updates.quantity);
+        }
+        
+        //Check if there are any fileds to update
+        if (updateFields.length === 0) {
+            return Promise.resolve({ updated: false });
+        }
+
+        
+        const sql = `
+            UPDATE Inventory
+            SET ${updateFields.join(', ')}
+            WHERE book_id = ?
+        `;
+        parameters.push(book.book_id); 
+        const db = openDB();// Get the DB oject 
+        return new Promise((resolve, reject) => {
+          db.run(sql, parameters, (err) => {
+            if (err) {
+              reject(err);
+            } else {
+              resolve({ updated: true });
+            }
+          });
+        });
+    }
+
 }
 
-export {Book};
+export default new Book();
  
 

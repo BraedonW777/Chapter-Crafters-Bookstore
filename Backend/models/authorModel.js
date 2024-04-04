@@ -1,10 +1,11 @@
 //authorModel.js
-import db from '../db.js';
+import openDB from '../db.js';
 
 console.log("Inside authorModel.js");
 
 class Author {
     static async create(newAuthor) {
+      const db = openDB();// Get the DB oject 
         return new Promise((resolve, reject) => {
             db.run("INSERT INTO Authors (first_name, last_name) Values (?, ?)", [newAuthor.first_name, newAuthor.last_name], function(err) { 
                if (err) {
@@ -17,7 +18,8 @@ class Author {
         });
     }
 
-    static async findByNames(firstName, lastName) {
+    async findByNames(firstName, lastName) {
+      const db = openDB();// Get the DB oject 
         return new Promise((resolve, reject) => {
           const sql = 'SELECT * FROM Authors WHERE first_name = ? AND last_name = ?';
           db.get(sql, [firstName, lastName], (err, row) => {
@@ -32,4 +34,4 @@ class Author {
 }
 
 
-export { Author };
+export default new Author();

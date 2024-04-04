@@ -12,6 +12,8 @@
 // db.serialize(() => {  db.run("BEGIN TRANSACTION");  db.run("INSERT INTO users (name) VALUES ('John')");  db.run("INSERT INTO users (name) VALUES ('Jane')");  db.run("COMMIT");});
 // Prepare Statements Syntax: const statement = db.prepare("INSERT INTO users (name) VALUES (?)");statement.run("John");statement.run("Jane");statement.finalize();
 // 
+import db from './db.js';
+import {PORT} from "./config.js";
 
 
 const sqlite3 = require('sqlite3').verbose();
