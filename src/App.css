@@ -4,6 +4,11 @@
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
+  background-color: #efefef; /*Setting backgound color of site to light grey / off-white. Only affects the app section of site */
+}
+
+body {
+  background-color: #efefef; /*Sets the rest of the site outside of the the app section to the same color*/
 }
 
 nav {
@@ -29,7 +34,7 @@ nav {
 }
 
 
-/*style the links*/
+/*style the links at the top*/
 .nav-links li a {
   text-decoration: none;
   color: #333;
@@ -52,5 +57,23 @@ nav {
 
 .home p {
   font-size: 18px;
+  font-style: italic;
   color: #666;
+}
+
+/*styling the button on home page*/
+.button {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #ff0000; /* Red color */
+  color: #fff; /* White text */
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 16px;
+}
+
+.button:hover {
+  background-color: #cc0000; /* Darker red on hover */
 }
