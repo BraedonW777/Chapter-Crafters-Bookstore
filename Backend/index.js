@@ -1,10 +1,13 @@
 import express from "express";
+import cors from "cors";
 import {PORT} from "./config.js";
 import { Book } from './models/bookModel';
 import db from './db.js';
 import { Author } from './models/authorModel.js'
 
 const app = express();
+
+app.use(cors());
 
 app.get('/', (request, response) => {
     console.log(request)
