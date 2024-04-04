@@ -1,3 +1,4 @@
+//Mtillman
 // Work in progress
 // move TablesCreate under !dbExists statement
 // Integrate information_schema.tables and information_schema.columns and datatypes checkinginto dbExists statement
@@ -11,13 +12,55 @@
 // db.all("SELECT * FROM users", (err, rows) => {  if (err) {    console.error(err);  } else {    console.log(rows);  }});
 // db.serialize(() => {  db.run("BEGIN TRANSACTION");  db.run("INSERT INTO users (name) VALUES ('John')");  db.run("INSERT INTO users (name) VALUES ('Jane')");  db.run("COMMIT");});
 // Prepare Statements Syntax: const statement = db.prepare("INSERT INTO users (name) VALUES (?)");statement.run("John");statement.run("Jane");statement.finalize();
-// **** With Prepare statement, only one search call needed for all searches. it would need a translation on the front end for searches that do not dirrectly access the books table such as genre or author. therefore, needing a second call once Books(book_id) is returned.
+// **** With Prepare statement, only one search call needed for all searches. it would need a translation on the front end for searches that do not dirrectly access the books table such as genre or author. 
+// therefore, needing a second call once Books(book_id) is returned.
+
+// https://stackoverflow.com/questions/62743570/using-es6-modules-in-express
+// With node.js, you HAVE to tell it that your main file you are loading is an ESM module. There are a couple ways to do that. The simplest is to just give the main file a .mjs file extension.
+// app.mjs
+// import express from 'express';
+// const app = express();
+// app.get("/", (req, res) => {
+//     res.send("hello");
+// });
+
+// https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/Introduction
+// required 'require funciton'
+// const express = require("express");
+// const app = express();
+// Functions below are export syntax for multiple paths for perimeter of a square funtion.
+// exports.area = function (width) {
+//   return width * width;
+// };
+// exports.perimeter = function (width) {
+//   return 4 * width;
+// };
+// Import Module using require funciton:
+// const square = require("./square"); // Here we require() the name of the file without the (optional) .js file extension
+// console.log(`The area of a square with a width of 4 is ${square.area(4)}`);
+// Note: You can also specify an absolute path to the module (or a name, as we did initially).
+// If you want to export a complete object in one assignment instead of building it one property at a time, 
+// assign it to module.exports as shown below (you can also do this to make the root of the exports object a constructor or other function):
+// module.exports = {
+//   area(width) {
+//     return width * width;
+//   },
+// 
+//   perimeter(width) {
+//     return 4 * width;
+//   },
+// };
+
+
+
+
+app.listen(80);
 
 
 const sqlite3 = require('sqlite3').verbose();
 const fs = require('fs');
 
-databaseValidate.exports = {
+exports.databaseValidate = {
   createTables: ('./bookstore.db') => {
     const dbExists = existsSync('./bookstore.db'); // Check for file existence
 
@@ -187,6 +230,9 @@ databaseValidate.exports = {
     });
   }
 };
+
+// Above code will be migrated to ./models/databasecreation
+// date and time of migration: 
 
 
 // Modules to Insert data into tables
