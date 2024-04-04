@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import {PORT} from "./config.js";
 //import { Book } from './models/bookModel';
 import openDB  from './db.js';
@@ -10,12 +11,8 @@ const app = express();
 
 //middleware used for parsing request body
 app.use(express.json());
+app.use(cors());
 
-//app.get('/', (request, response) => {
-    //console.log(request)
-    //return response.status(200).send('Welcome to the BOOKSTORE');
-
-//});
 
 app.use('/books', booksRoute);
 app.use('/search', searchRoute);

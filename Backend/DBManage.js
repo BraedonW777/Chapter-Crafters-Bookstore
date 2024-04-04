@@ -11,9 +11,7 @@
 // db.all("SELECT * FROM users", (err, rows) => {  if (err) {    console.error(err);  } else {    console.log(rows);  }});
 // db.serialize(() => {  db.run("BEGIN TRANSACTION");  db.run("INSERT INTO users (name) VALUES ('John')");  db.run("INSERT INTO users (name) VALUES ('Jane')");  db.run("COMMIT");});
 // Prepare Statements Syntax: const statement = db.prepare("INSERT INTO users (name) VALUES (?)");statement.run("John");statement.run("Jane");statement.finalize();
-// 
-import db from './db.js';
-import {PORT} from "./config.js";
+// **** With Prepare statement, only one search call needed for all searches. it would need a translation on the front end for searches that do not dirrectly access the books table such as genre or author. therefore, needing a second call once Books(book_id) is returned.
 
 
 const sqlite3 = require('sqlite3').verbose();

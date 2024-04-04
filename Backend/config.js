@@ -1,3 +1,3 @@
 export const PORT = 3000;
 
-export const DATABASE = 'bookstore.db';
+export const DATABASE = 'Backend/bookstore.db'; //point to the existing db. 
