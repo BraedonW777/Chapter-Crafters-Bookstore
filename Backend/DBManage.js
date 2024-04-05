@@ -75,7 +75,7 @@ exports.databaseValidate = {
     },
     
     if (dbExists) {
-      function validateTableName(Users) {
+      function validateTableName(Orders) {
         const regex = /^[a-zA-Z_][a-zA-Z0-9_]*$/; // Allow alphanumeric characters and underscores
         return regex.test(Users);
       }
@@ -119,13 +119,22 @@ exports.databaseValidate = {
     });
 
     const TablesCreate = {
-      // Sets variable for User Table Checking
-      Users: `CREATE TABLE IF NOT EXISTS Users (
-        user_id INTEGER PRIMARY KEY AUTOINCREMENT,
-        username VARCHAR(50) UNIQUE,
-        email VARCHAR(100) UNIQUE,
-        password_hash VARCHAR(255),
-        user_role ENUM('Admin', 'Customer', 'Employee') DEFAULT 'Customer'
+      // Sets variable for Orders Table Checking
+      Orders: `CREATE TABLE IF NOT EXISTS Orders (
+        order_id INTEGER PRIMARY KEY AUTOINCREMENT,
+        cart_id INTEGER UNIQUE,
+        email VARCHAR(100),
+        Fname VARCHAR(255),
+					 Lname VA4CHAR(255),
+					 AddrLine1 VARCHAR(255),
+					 AddrLine2 VRCHAR(255),
+					 AddrCity VARCHAR(255),
+        AddrState ENUM('CHOOSE STATE', 'ADD LIST') DEFAULT 'CHOOSE STATE',
+					 AddrZip1 INTEGER(5),
+					 AddrZip2 INTEGER(4),
+					 Status ENUM('Processing', 'Confirmed', 'Fulfilling', 'Shipped', 'Delivered', 'Cancelled'),
+					 PRIMARY KEY order_id AUTOINCREMENT,
+					 FOREIGN KEY (cart_id) REFERENCES Cart(cart_id),
       );`,
 
       // Sets variable for Books Table Checking
@@ -175,12 +184,13 @@ exports.databaseValidate = {
 
       // Sets variable for Cart Table Checking
       Cart: `CREATE TABLE IF NOT EXISTS Cart (
-        cart_id INTEGER PRIMARY KEY AUTOINCREMENT,
-        user_id INTEGER,
-        book_id INTEGER,
+        cart_id INTEGER PRIMARY KEY,
+        user_id INTEGER, // references session cookie ID Not Unique???(multiple per table)
+        inventory_id INTEGER,
         quantitiy INTEGER,
-        FOREIGN KEY (user_id) REFERENCES Users(user_id),
-        FOREIGN KEY (book_id) REFERENCES Books(book_id)
+					 timeAdded TIMESTAMP,
+					 timeRemoved TIMESTAMP,
+        FOREIGN KEY (inventory_id) REFERENCES Inventory(inventory_id)
       );`,
     };
 
