@@ -294,8 +294,7 @@ exports.databaseValidate = {
         db.close();
       }
     });
-  }
-};
+  };
 
 // Above code will be migrated to ./models/databasecreation
 // date and time of migration: 
