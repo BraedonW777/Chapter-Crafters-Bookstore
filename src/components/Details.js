@@ -30,7 +30,11 @@ const Details = ({ match }) => {
           <p>Author: {book.author_fullname}</p>
           <p>ISBN: {book.isbn}</p>
           <p>Edition: {book.edition}</p>
-          <p>Cost: {book.cost}</p>
+          <p>Cost: {book.cost}</p> 
+          {/* Since the inventory is rare books, that makes each product have to be defined a different price due to rarity. 
+          This means we need to pull an index of the book IDs from the Inventory Table and list the cost from a sorted rarity and uniquenes. 
+          It would also be imperative to display the books.summary, inventory.rarity, inventory.edition, and inventory.uniqueSummary. Mtillman*/}
+
           {/* Add additional book details here */}
         </div>
       ) : (
