@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios'; //had to install axios for API requests. 
 
 const Inventory = () => {
@@ -23,7 +24,7 @@ const Inventory = () => {
       <ul>
         {books.map(book => (
           <li key={book.book_id}>
-            {book.title} - {book.author_fullname} - {book.isbn} - {book.cost} {/* Adjust this according to book schema (Can be done later after we get the import working) */}
+            <Link to={`/books/${book.book_id}`}>{book.title}</Link> - {book.author_fullname} - {book.isbn} - {book.cost} {/* Adjust this according to book schema (Can be done later after we get the import working) */}
           </li>
         ))}
       </ul>
