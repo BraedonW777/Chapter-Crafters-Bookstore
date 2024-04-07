@@ -9,6 +9,7 @@ import Orders from './components/Orders.js';
 //import Sales from './components/Sales.js';
 import Cart from './components/Cart.js';
 import bookImage from './assets/book_image.jpg'; //import book image
+import Details from './components/Details.js';
 import './App.css'; // Import CSS file
 
 /**VVV this will always be on the top of the app VVV */
@@ -43,6 +44,7 @@ const App = () => {
           {/*<Route path="/sales" element={<Sales />} />*/}
           <Route path="/cart" element={<Cart />} />
           <Route path="/" element={<Home />} />{/*home link*/}
+          <Route path="/books/:id" Component={Details} />
         </Routes>
       </div>
     </Router>
