@@ -1,7 +1,7 @@
 import express from 'express';
 import Book from '../models/bookModel';
 import Author from '../models/authorModel.js';
-import Search  from '../models/searchModel,js';
+import Search  from '../models/searchModel.js';
 
 const router = express.Router();
 
