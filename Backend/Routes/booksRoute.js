@@ -36,10 +36,9 @@ router.get('/:id', async (request, response) => {
 
         const book = await Book.findByID(id);
         return response.status(200).json(book);
-        
     } catch (error) {
         console.log(error.message);
-        response.status(500).send({message: error.message});        
+        response.status(500).send({message: error.message});     
     }
 })
 
@@ -56,6 +55,7 @@ router.post('', async (request, response) => {
         if(!request.body.author_last_name) { missingFields.push('author_last_name'); }
         if (!request.body.isbn) { missingFields.push('isbn'); }
         if (!request.body.cost) { missingFields.push('cost'); }
+        if (!request.body.genre) {missingFields.push('genre'); }
         
         if (missingFields.length > 0) {
             return response.status(400).send({
@@ -67,6 +67,7 @@ router.post('', async (request, response) => {
         const bookIsbn = request.body.isbn;
         const bookEdition = request.body.edition;
         const bookCost = request.body.cost;
+        const bookGenre = request.body.genre;
         
         console.log("authorFirstname:", authorFirstName);
         console.log("authorLastName:", authorLastName);
@@ -95,6 +96,7 @@ router.post('', async (request, response) => {
             isbn: bookIsbn,
             edition: bookEdition,
             cost: bookCost,
+            genre: bookGenre,
         };    
         
         //checking if book exists in DB by ISBN number

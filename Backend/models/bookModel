@@ -60,7 +60,11 @@ class Book {
     async findByID(id) {
         const db = openDB();// Get the DB oject 
         return new Promise((resolve, reject) => {
-            const sql = 'SELECT * FROM Books WHERE book_id = ?'; 
+            const sql = `SELECT Books.title, Books.book_id, Books.isbn, Books.edition, Books.cost, CONCAT(Authors.first_name, ' ', Authors.last_name) AS author_fullName, Genre.category
+            FROM Books
+            JOIN Authors ON Books.author_id = Authors.author_id
+            JOIN Genre ON Books.genre_id = Genre.genre_id 
+            WHERE Books.book_id = ?`; 
             db.get(sql, [id], (err, row) => {
                 if (err) {
                     reject(err);
