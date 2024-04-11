@@ -2,7 +2,7 @@ import { query } from 'express';
 import  openDB  from '../db.js';
 import Author  from './authorModel.js';
 
-console.log("Inside the bookModle");
+console.log("Inside the bookModel");
 
 class Book {
     async create(newBook) {
