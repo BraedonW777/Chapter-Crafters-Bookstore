@@ -8,49 +8,59 @@ import { v4 as uuidv4 } from 'uuid';
 
 
 const router = express.Router();
+let newCartItem = [];
 
+//route for Get All books in cart
+// Route to get all items in the cart
+router.get('/', async (request, response) => {
+  try {
+      // Retrieve the cart ID from the session or request parameters
+      const cart = await Cart.getCartBySessionId(request.sessionID); 
+      
+      if (cart === null) {
+        return response.json({ message: 'Cart is Empty!' });
+      }
+      // Retrieve all items associated with the cart ID
+      const cartItems = await Cart.getCartItems(cart.id);
+
+      // Respond with the cart items
+      response.json(cartItems);
+  } catch (error) {
+      console.error('Error fetching cart items:', error);
+      response.status(500).json({ error: 'Failed to fetch cart items' });
+  }
+});
+
+//route to add item to cart
 router.post('', async (request, respond) => {
     console.log('inside the addtocart route');
-    console.log('what is requested from the front:', request.body);  
+    console.log('here is the sessiion id at route entrance',request.sessionID);
+   try {
+    const { book_id, quantity, cost } = request.body;
+
+
+    //Get existing cart
+    let cart = await Cart.getCartBySessionId(request.sessionID);
+    console.log('session id at existing cart ck:', request.session.id);
     
-    //get info from frontend object
-    const book_id = request.body.book_id;
-    const quantity = request.body.quantity;
-    const cost = request.body.cost;
-       
-    //Get or Generate unique order ID if it doesn't exist in the session
-    if (!request.sessionID.order_id) {
-        console.log('Session_id: ', request.session);
-        request.session.order_id = uuidv4();
+    //Create cart if it doesn't exist
+    if (cart === null) {
+      const cartId =  await Cart.createNewCart(request.sessionID);
+      cart = { id: cartId};
+      console.log('here is the cartID from newCart:', cart);
     }
-    const order_id = request.session.order_id;
+    
+    
+    //add item to the cart 
+    await Cart.addToCart(cart.id, book_id, quantity, cost);
 
-    //Input Validation 
-    if (!book_id || !quantity || !cost) {
-        return respond.status(400).send( 'Missing book_id,  quantity, or cost' );
-    }
-
-    const newCart = {
-        book_id: book_id,
-        order_id: request.session.order_id,
-        quantity: quantity,
-        cost: cost
-    };        
-
-    //Call the cart mdoel to add the item 
-    try {
-        //call the cart Model with inventory check
-        await Cart.create(newCart);
-        respond.status(200).send('Item add to cart');
-    } catch (err) {
-        if (err.message === 'Insufficient stock') {
-            respond.status(400).json({ error: 'Insufficient stock' });
-        }
-        else {
-            console.error('Error adding to cart:', err);
-            respond.status(500).json({ error: 'Internal server error' });
-        }       
-    }
+    respond.json({ message: 'Item added to cart successfully!' });
+   } catch (error) {
+    console.error('Error adding item to cart:', error);
+    respond.status(500).json({ error: "Failed to add item to cart" });
+   }  
+});
+   
 
 // Route to delete a item from shopping cart
 router.delete('/:book_id', async (request, response) => {
@@ -75,6 +85,6 @@ router.delete('/:book_id', async (request, response) => {
         }
     })
 
-});
+
 
 export default router;

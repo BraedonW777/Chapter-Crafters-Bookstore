@@ -11,26 +11,35 @@ import cartRoute from './Routes/cartRoute.js';
 import { v4 as uuidv4 } from 'uuid';
 
 const app = express();
+
 //creating the secret string 
 const secret = uuidv4();
 
 //Session Configuration
 app.use(session({
     secret: secret,
-    resave: false,
-    saveUninitialized: false,
+    resave: true, //these need to be set to true for cookies to be past
+    saveUninitialized: true, //this needs to be set to true for cookies to based with request 
     cookies: {
+        path: '/',
         httpOnly: true,
-        secure: true,
-        maxAge: 360000,
-        name: 'bookshop_sid'
-    }
-}))
+        secure: false,
+        maxAge: null 
+    }   
+}));
 
+app.use((request, response, next) => {
+    console.log('Session ID:', request.sessionID);
+    next();
+})
 //middleware used for parsing request body
 app.use(express.json());
-app.use(cors());
 
+//used for Cross-Site origins
+app.use(cors({
+    origin: 'http://localhost:3001', //frontend origin
+    credentials: true //needed for sending cookies on local host
+}));
 
 app.use('/books', booksRoute);
 app.use('/search', searchRoute);

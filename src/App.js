@@ -1,6 +1,6 @@
 // src/App.js
-
 import React from 'react';
+//may not need this one --import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 //temp comenting out unused imports
 //import Dashboard from './components/Dashboard.js';
@@ -11,6 +11,8 @@ import Cart from './components/Cart.js';
 import bookImage from './assets/book_image.jpg'; //import book image
 import Details from './components/Details.js';
 import './App.css'; // Import CSS file
+//import { eventWrapper } from '@testing-library/user-event/dist/utils/index.js';
+
 
 /**VVV this will always be on the top of the app VVV */
 const App = () => {

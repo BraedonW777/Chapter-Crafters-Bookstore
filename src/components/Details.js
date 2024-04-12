@@ -24,7 +24,8 @@ const Details = ({ match }) => {
   const [quantity, setQuantity] = useState(1);
   const [cartCount, setCartCount] = useState(0);
   const [cartFeedback, setCartFeedback] = useState(''); // For feedback messages
-  
+
+
   useEffect(() => {
     const storedCount = sessionStorage.getItem('cartCount');
     setCartCount(storedCount? parseInt(storedCount, 10) : 0);
@@ -33,11 +34,12 @@ const Details = ({ match }) => {
   const handleAddToCart = async () => {
       try {
           console.log(book.book_id);
+
           const response = await axios.post('http://localhost:3000/addToCart', {
               book_id: book.book_id,
               quantity: quantity,
               cost: book.cost, 
-          });
+          }, { withCredentials: true});
           console.log(response.data);
 
           //setCartCount(cartCount + quantity); // Update the cart count
