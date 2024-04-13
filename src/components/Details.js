@@ -26,10 +26,10 @@ const Details = ({ match, updateCartCount }) => {
   const [cartCount, setCartCount] = useState(0);
   const [cartFeedback, setCartFeedback] = useState(''); // For feedback messages
 
-
+//had to update this to use local storage instead of sessionstorage.
   useEffect(() => {
-    const storedCount = sessionStorage.getItem('cartCount');
-    setCartCount(storedCount? parseInt(storedCount, 10) : 0);
+    const storedCount = localStorage.getItem('cartCount');
+    setCartCount(storedCount ? parseInt(storedCount, 10) : 0);
   }, []);
 
   const handleAddToCart = async () => {
@@ -44,10 +44,16 @@ const Details = ({ match, updateCartCount }) => {
           console.log(response.data);
           //Still having some errors with the cart count. will come back to this. 
           //setCartCount(cartCount + quantity); // Update the cart count
-          updateCartCount(prevCount => prevCount + quantity);//this updateCartCount is being passed to the app.js file
-          setCartCount(prevCount => prevCount + quantity);
-          sessionStorage.setItem('cartCount', cartCount + quantity);
+          const newCount = cartCount + quantity;
+          //next 3 lines are needed to update the event viewer in app.js to update the cart count properly. (this needs to be added anywhere we update the cart count)
+          const newCartCount = newCount; // Example new cart count
+          const cartCountChangeEvent = new CustomEvent('cartCountChange', { detail: newCartCount });
+          window.dispatchEvent(cartCountChangeEvent)
+          //set the cart count
+          setCartCount(newCount);
+          localStorage.setItem('cartCount', newCount);
           setCartFeedback('Item added to cart!');
+          
 
       } catch (error) {
           console.error('Error adding to cart:', error);

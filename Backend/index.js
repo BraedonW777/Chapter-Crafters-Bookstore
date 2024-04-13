@@ -20,7 +20,7 @@ app.use(session({
     secret: secret,
     resave: true, //these need to be set to true for cookies to be past
     saveUninitialized: true, //this needs to be set to true for cookies to based with request 
-    cookies: {
+    cookie: {
         path: '/',
         httpOnly: true,
         secure: false,
