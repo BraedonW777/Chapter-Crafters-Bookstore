@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import './Details.css';
 
-const Details = ({ match }) => {
+const Details = ({ match, updateCartCount }) => {
   const [book, setBook] = useState(null);
   const { id } = useParams(); //access route paramater directly
 //using the same meathod from the inventory page.
@@ -41,9 +42,10 @@ const Details = ({ match }) => {
               cost: book.cost, 
           }, { withCredentials: true});
           console.log(response.data);
-
+          //Still having some errors with the cart count. will come back to this. 
           //setCartCount(cartCount + quantity); // Update the cart count
-          setCartCount(cartCount + quantity);
+          updateCartCount(prevCount => prevCount + quantity);//this updateCartCount is being passed to the app.js file
+          setCartCount(prevCount => prevCount + quantity);
           sessionStorage.setItem('cartCount', cartCount + quantity);
           setCartFeedback('Item added to cart!');
 
@@ -75,13 +77,15 @@ const Details = ({ match }) => {
           It would also be imperative to display the books.summary, inventory.rarity, inventory.edition, and inventory.uniqueSummary. Mtillman*/}
 
           {/* I addded the below input stuff as well-for the click and the quantity */}
+          <label class="label">Quantity:  </label>
           <input
           type="number"
           min="1"
           value={quantity}
           onChange={(e) => setQuantity(parseInt(e.target.value, 10) || 1)}
+          class="input"
           />
-          <button onClick={handleAddToCart}>
+          <button class="button" onClick={handleAddToCart}>
             Add to Cart ({cartCount}) {/*Display cart Count*/}
           </button>
           {cartFeedback && <p>{cartFeedback}</p>}

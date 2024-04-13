@@ -67,10 +67,10 @@ router.delete('/:book_id', async (request, response) => {
         console.log("Delete cart by book_id route reached");
         try {
             const book_id = request.params.book_id;
-            console.log("Captured ISBN:", book_id);
+            console.log("Captured ID:", book_id);
     
-                              
-            const deleteResult = await Book.deleteByID(book_id, order_id); 
+            //this was pointing to the book model before. Canged it to point to the cart model.                   
+            const deleteResult = await Cart.deleteByID(book_id); //order_id needed to be removed for now as it was throwing an error, but can be added back when needed -bw
             console.log("Delete Result:", deleteResult); // Log the result
     
             if (deleteResult.deleted) {

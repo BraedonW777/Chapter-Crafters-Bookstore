@@ -80,6 +80,8 @@ class Cart {
             });
 
         }
+
+        
     
         return new Promise((resolve, reject) => {
             db.run(sql, [cartId, book_id, quantity, cost],function(err) {
@@ -119,6 +121,26 @@ class Cart {
                     resolve(row,);
                     console.log('Cart Items:', row);
                 }
+            });
+        });
+    }
+
+    //added this funtion to get the remove button from the cart working
+    //just copied the deleteByIsbn function
+    //the cart route calles to this function but it did not exist yet. 
+    async deleteByID(book_id) {  
+        const db = openDB();// Get the DB oject      
+        return new Promise((resolve, reject) => {
+            const sql = 'DELETE FROM cart_items WHERE book_id = ?';
+            db.run(sql, [book_id], function(err) {
+                if (err) {
+                    reject(err); 
+                } else {
+                    resolve({ 
+                        deleted: true, 
+                        changes: this.changes 
+                    }); 
+                } 
             });
         });
     }

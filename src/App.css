@@ -33,6 +33,12 @@ nav {
   display: inline-block;
 }
 
+.cart-link span {
+  font-weight: bold;
+  margin-left: 5px; /* Adjust as needed */
+  color: #ff0000; /* Adjust as needed */
+}
+
 
 /*style the links at the top*/
 .nav-links li a {
@@ -61,7 +67,7 @@ nav {
   color: #666;
 }
 
-/*styling the button on home page*/
+/*styling the button on details home page*/
 .button {
   display: inline-block;
   padding: 10px 20px;
