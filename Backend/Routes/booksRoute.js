@@ -12,7 +12,7 @@ router.get('', async (request, response) => {
     console.log("Inside get/books");
     try {
         const books = await Book.find({});
-        console.log("Books from Book.find():", books); // logging the output 
+        //console.log("Books from Book.find():", books); // logging the output 
         
         //Create a response structure
         const structure = {

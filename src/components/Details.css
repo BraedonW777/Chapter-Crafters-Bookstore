@@ -1,0 +1,26 @@
+/*.css file for the Details page*/
+/*set the button for add to cart to be the same as the button on the home page*/
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #ff0000; /* Red color */
+    color: #fff; /* White text */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 16px;
+  }
+  
+  .button:hover {
+    background-color: #cc0000; /* Darker red on hover */
+  }
+
+  .input {
+    width: 40px; /* Set the desired width */
+    margin: 5px;
+  }
+
+  .label {
+    font-weight: bold;
+  }

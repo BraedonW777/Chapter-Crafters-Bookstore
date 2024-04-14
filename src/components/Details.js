@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import './Details.css';
 
-const Details = ({ match }) => {
+const Details = ({ match, updateCartCount }) => {
   const [book, setBook] = useState(null);
   const { id } = useParams(); //access route paramater directly
 //using the same meathod from the inventory page.
@@ -25,10 +26,10 @@ const Details = ({ match }) => {
   const [cartCount, setCartCount] = useState(0);
   const [cartFeedback, setCartFeedback] = useState(''); // For feedback messages
 
-
+//had to update this to use local storage instead of sessionstorage.
   useEffect(() => {
-    const storedCount = sessionStorage.getItem('cartCount');
-    setCartCount(storedCount? parseInt(storedCount, 10) : 0);
+    const storedCount = localStorage.getItem('cartCount');
+    setCartCount(storedCount ? parseInt(storedCount, 10) : 0);
   }, []);
 
   const handleAddToCart = async () => {
@@ -41,11 +42,18 @@ const Details = ({ match }) => {
               cost: book.cost, 
           }, { withCredentials: true});
           console.log(response.data);
-
+          //Still having some errors with the cart count. will come back to this. 
           //setCartCount(cartCount + quantity); // Update the cart count
-          setCartCount(cartCount + quantity);
-          sessionStorage.setItem('cartCount', cartCount + quantity);
+          const newCount = cartCount + quantity;
+          //next 3 lines are needed to update the event viewer in app.js to update the cart count properly. (this needs to be added anywhere we update the cart count)
+          const newCartCount = newCount; // Example new cart count
+          const cartCountChangeEvent = new CustomEvent('cartCountChange', { detail: newCartCount });
+          window.dispatchEvent(cartCountChangeEvent)
+          //set the cart count
+          setCartCount(newCount);
+          localStorage.setItem('cartCount', newCount);
           setCartFeedback('Item added to cart!');
+          
 
       } catch (error) {
           console.error('Error adding to cart:', error);
@@ -75,13 +83,15 @@ const Details = ({ match }) => {
           It would also be imperative to display the books.summary, inventory.rarity, inventory.edition, and inventory.uniqueSummary. Mtillman*/}
 
           {/* I addded the below input stuff as well-for the click and the quantity */}
+          <label class="label">Quantity:  </label>
           <input
           type="number"
           min="1"
           value={quantity}
           onChange={(e) => setQuantity(parseInt(e.target.value, 10) || 1)}
+          class="input"
           />
-          <button onClick={handleAddToCart}>
+          <button class="button" onClick={handleAddToCart}>
             Add to Cart ({cartCount}) {/*Display cart Count*/}
           </button>
           {cartFeedback && <p>{cartFeedback}</p>}

@@ -50,7 +50,7 @@ class Book {
                     console.error("Error in Book.find():", err);
                     reject(err);
                 } else {
-                    console.log("Rows from Book.find():", rows);
+                    //console.log("Rows from Book.find():", rows);
                     resolve(rows); 
                 }
             }); 
@@ -91,6 +91,7 @@ class Book {
             });
         });
     }
+
 
     async updateBook(book, updates) {
               
