@@ -1,8 +1,8 @@
 /* CheckoutPage.css */
 form {
     max-width: 600px;
-    margin: 40px auto;
-    padding: 30px;
+    margin: 30px auto;
+    padding: 20px;
     border: none; /* Remove the border */
     /* Add subtle box-shadow for a raised effect */
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
@@ -30,7 +30,8 @@ form {
   }
   
   input[type="text"],
-  input[type="email"] {
+  input[type="email"], 
+  input[type="tel"] {
     width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
@@ -41,6 +42,7 @@ form {
   
   /* Add some hover styles to the input fields for a subtle visual effect */
   input[type="text"]:hover,
+  input[type="phone"]:hover,
   input[type="email"]:hover {
     border-color: #999;
   }

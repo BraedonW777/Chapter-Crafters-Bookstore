@@ -1,6 +1,6 @@
 // src/components/Cart.js
 import React, { useState, useEffect } from 'react';
-import { Link, } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './Cart.css';
 
@@ -9,6 +9,7 @@ const Cart = ({cartCount}) => {
     const [loading, setLoading] = useState(true);
     //LK added to display a cart total amount
     const [total, setTotal] = useState(0); //state variable for the total 
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchCartItems = async () => {
@@ -70,7 +71,14 @@ const Cart = ({cartCount}) => {
         if (confirmed) {
             //Proceed with checkout
             console.log('Checkout confirmed');
-            window.location.href = '/checkout';
+            const queryParams = new URLSearchParams();
+            cartItems.forEach((item, index) => {
+                queryParams.append(`item${index + 1}`, JSON.stringify(item));
+            })
+            const queryString = queryParams.toString();
+            const url = `/checkout?${queryString}`;
+
+            navigate(url);
         } else {
             console.log('Checkout canceled');
         }
@@ -95,10 +103,10 @@ const Cart = ({cartCount}) => {
               <ul>
                   {/* Use .map() to iterate over the cartItems array */}
                   {cartItems.map(item => (
-                      <li key={item.book_id}> {/* Make sure a unique id exists. Added link back to book details from each book in the cart -bw */}
-                          <Link to={`/books/${item.book_id}`}>{item.title}</Link> by {item.first_name} {item.last_name} - Quantity: {item.quantity} - Price: ${item.price.toFixed(2)}
-                          <button class="button" onClick={() => removeItem(item.book_id, item.quantity)}>Remove</button> {/* Button to remove item */}
-                      </li>
+                    <div className="cart-item" key={item.book_id}> {/* Make sure a unique id exists. Added link back to book details from each book in the cart -bw */}
+                          <Link to={`/books/${item.book_id}`}>{item.title}</Link> by<span className="author-name">{item.first_name} {item.last_name}</span>{"   "} Quantity: {item.quantity} - Price: ${item.price.toFixed(2)}
+                          <button className="button" onClick={() => removeItem(item.book_id, item.quantity)}>Remove</button> {/* Button to remove item */}
+                    </div>
                   ))}
               </ul>
                 <p style={{ fontWeight: 'bold', fontSize: '1.2em' }}>Total: ${total}</p>

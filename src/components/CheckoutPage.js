@@ -34,13 +34,33 @@ const CheckoutPage = () => {
 
     const total = calculateTotal();
 
-const [fullName, setFullName] = useState('');
-const [email, setEmail] = useState('');
-const [addressLine1, setAddressLine1] = useState('');
-const [addressLine2, setAddressLine2] = useState('');
-const [city, setCity] = useState('');
-const [state, setState] = useState('');
-const [zipCode, setZipCode] = useState('');
+  const [fullName, setFullName] = useState('');
+  const [email, setEmail] = useState('');
+  const [emailError, setEmailError] = useState(null);
+  const [phone, setPhone] = useState('');
+  const [phoneError, setPhoneError] = useState(null);
+  const [addressLine1, setAddressLine1] = useState('');
+  const [addressLine2, setAddressLine2] = useState('');
+  const [city, setCity] = useState('');
+  const [state, setState] = useState('');
+  const [zipCode, setZipCode] = useState('');
+
+  const validateEmail = (value) => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(value)) {
+      setEmailError('Invalid email format');
+    } else {
+      setEmailError(null);
+   }
+  }
+  const validatePhone = (value) => {
+    const phoneRegex = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+    if (!phoneRegex.test(value)) {
+      setPhoneError('Invalid phone number format. Example: (123) 456-7890');
+    } else {
+      setPhoneError(null);
+    }
+  }
 
 
     return (
@@ -48,7 +68,7 @@ const [zipCode, setZipCode] = useState('');
           <form>
             <h2>Shipping Information</h2>
             <div>
-              <label htmlfor="fullName">Full Name</label>
+              <label htmlFor="fullName">Full Name</label>
               <input
                 type ="text"
                 id="fullName"
@@ -62,8 +82,25 @@ const [zipCode, setZipCode] = useState('');
                 type ="email"
                 id="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  validateEmail(e.target.value);
+                }}
               />
+              {emailError && <p style={{color: 'red '}}>{emailError}</p>}
+            </div>
+            <div>
+              <label htmlFor="Phone">Phone Number:</label>
+              <input
+                type ="tel"
+                id="phone"
+                value={phone}
+                onChange={(e) => {
+                  setPhone(e.target.value);
+                  validatePhone(e.target.value);
+                }}
+              />
+              {phoneError && <p style={{color:'red' }}>{phoneError}</p>}
             </div>
             <div>
               <label htmlFor="addressLine1">Address Line 1:</label>
