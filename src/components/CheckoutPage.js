@@ -1,14 +1,133 @@
-// src/components/Orders.js
+//src/components/CheckoutPage
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import './CheckoutPage.css';
 
-const Checkout = () => {
-  return (
-    <div>
-      <h1>Checkout</h1>
-      <p>View and manage checkout here!</p>
-    </div>
-  );
+const CheckoutPage = () => {
+    const location = useLocation();
+    const [cartItems, setCartItems] = useState([]);
+
+    useEffect(() => {
+        const searchParams = new URLSearchParams(location.search);
+        const items = [];
+
+        // Iterate over query parameters to extract cart items
+        for (const [key, value] of searchParams.entries()) {
+            if (key.startsWith('item')) {
+                items.push(JSON.parse(value));
+            }
+        }
+
+        setCartItems(items);
+    }, [location]);
+
+    //Calculate total function
+    const calculateTotal = () => {
+      let totalCost = 0;
+
+      cartItems.forEach(item => {
+        totalCost += item.price * item.quantity;
+      })
+      return totalCost.toFixed(2);
+    }
+
+    const total = calculateTotal();
+
+const [fullName, setFullName] = useState('');
+const [email, setEmail] = useState('');
+const [addressLine1, setAddressLine1] = useState('');
+const [addressLine2, setAddressLine2] = useState('');
+const [city, setCity] = useState('');
+const [state, setState] = useState('');
+const [zipCode, setZipCode] = useState('');
+
+
+    return (
+        <div>
+          <form>
+            <h2>Shipping Information</h2>
+            <div>
+              <label htmlfor="fullName">Full Name</label>
+              <input
+                type ="text"
+                id="fullName"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+              />
+            </div>
+            <div>
+              <label htmlFor="Email">Email Address:</label>
+              <input
+                type ="email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+            <div>
+              <label htmlFor="addressLine1">Address Line 1:</label>
+              <input
+                type ="text"
+                id="addressLine1"
+                value={addressLine1}
+                onChange={(e) => setAddressLine1(e.target.value)}
+              />
+            </div>
+            <div>
+              <label htmlFor="addressLine2">Address Line 2:</label>
+              <input
+                type ="text"
+                id="addressLine2"
+                value={addressLine2}
+                onChange={(e) => setAddressLine2(e.target.value)}
+              />
+            </div>
+            <div>
+              <label htmlFor="city">City:</label>
+              <input
+                type ="text"
+                id="city"
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
+              />
+            </div>
+            <div>
+              <label htmlFor="State">City:</label>
+              <input
+                type ="text"
+                id="state"
+                value={state}
+                onChange={(e) => setState(e.target.value)}
+              />
+            </div>
+            <div>
+              <label htmlFor="zipCode">Zip Code:</label>
+              <input
+                type ="text"
+                id="zipCode"
+                value={zipCode}
+                onChange={(e) => setZipCode(e.target.value)}
+              />
+            </div>
+          </form>
+
+          <div className="order-summary-box">
+                <h2>Order Summary</h2>
+                <div className="order-summary">
+                    <ul>
+                        {cartItems.map((item, index) => (
+                            <li key={index}>
+                                <p>{item.title} - Author: {item.first_name} {item.last_name} - Quantity: {item.quantity} - Price: ${item.price.toFixed(2)}</p>
+                            </li>
+                        ))}
+                    </ul>
+                    <p style={{ fontWeight: 'bold', fontSize: '1.2em' }}>Total: ${total}</p>
+                </div>
+            </div>
+        </div> 
+    );
 };
 
-export default Checkout;
+export default CheckoutPage;
+
