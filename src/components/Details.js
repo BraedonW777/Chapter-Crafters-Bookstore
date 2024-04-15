@@ -83,7 +83,7 @@ const Details = ({ match, updateCartCount }) => {
           It would also be imperative to display the books.summary, inventory.rarity, inventory.edition, and inventory.uniqueSummary. Mtillman*/}
 
           {/* I addded the below input stuff as well-for the click and the quantity */}
-          <label class="label">Quantity:  </label>
+          <label className="label">Quantity:  </label>
           <input
           type="number"
           min="1"
@@ -91,8 +91,8 @@ const Details = ({ match, updateCartCount }) => {
           onChange={(e) => setQuantity(parseInt(e.target.value, 10) || 1)}
           class="input"
           />
-          <button class="button" onClick={handleAddToCart}>
-            Add to Cart ({cartCount}) {/*Display cart Count*/}
+          <button className="button" onClick={handleAddToCart}>
+            Add to Cart {(cartCount)}{/*Display cart Count*/}
           </button>
           {cartFeedback && <p>{cartFeedback}</p>}
         </div>

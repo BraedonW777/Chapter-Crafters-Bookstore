@@ -1,10 +1,9 @@
 /* CheckoutPage.css */
+/*General Styling*/
 form {
     max-width: 600px;
     margin: 30px auto;
     padding: 20px;
-    border: none; /* Remove the border */
-    /* Add subtle box-shadow for a raised effect */
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
     border-radius: 4px;
     background-color: #f8f8f8; /* Add a light background color */
@@ -25,7 +24,7 @@ form {
   label {
     display: block;
     margin-bottom: 5px;
-    font-weight: normal; /* Remove bold font weight from labels */
+    font-weight: normal;
     color: #333; /* Darker text color for labels */
   }
   
@@ -47,14 +46,40 @@ form {
     border-color: #999;
   }
   
-  .order-summary-box {
+   /*Layout Specific Styles*/
+  .checkout-page-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 20px;
+  }
+.checkout-flex-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 20px;
+}
+
+.checkout-flex-item {
+    width: 40%;
+    padding: 20px;
     border: 1px solid #ddd;
-    padding: 15px;
+}
+
+.checkout-form {
+    flex-grow: 3
+}
+ 
+.order-summary {
     margin-bottom: 15px;
   }
 
-  .order-summary {
-    p{
-        margin-bottom: 5px;
-    }
+  .submit-button {
+    width: 100%;
+    margin-top: 20px;
+    padding: 10px;
+    font-size: 18px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
   }

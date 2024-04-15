@@ -3,8 +3,14 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import './CheckoutPage.css';
+import { useNavigate } from 'react-router-dom';
+import { useCart } from './CartContext.js'; //used for managing the cart state 
 
-const CheckoutPage = () => {
+
+const CheckoutPage = ({ setCartCount }) => {
+    const [isOrderSucccessful, setIsOrderSuccessful] = useState(false);
+    const { clearCart } = useCart();
+    const navigate = useNavigate();
     const location = useLocation();
     const [cartItems, setCartItems] = useState([]);
 
@@ -62,94 +68,153 @@ const CheckoutPage = () => {
     }
   }
 
+  //Place the order and send to backend 
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    console.log("Form Submitted");
+    //construct order data
+    const orderData = {
+      fullName, 
+      email,
+      phone, 
+      addressLine1,
+      addressLine2,
+      city,
+      state,
+      zipCode,
+      items: cartItems,
+      total
+    };
+    console.log("Order Submitted (Backend interaction pending):", orderData);
+    try { 
+      const response = await sendOrdertoBackend(orderData);
+      if (response.success) {
+        setIsOrderSuccessful(true);
+        alert('Thank you for your order! A detailed email will be sent to the email address provided.');
+        clearCart();
+        setCartCount(0);
+        navigate('/');
+      } else {
+        console.error('Order submission Failed:', response);
+      }
+    }catch (error) {
+        console.error("Error submitting order:", error);
+      }
+    };
+    const sendOrdertoBackend = async (orderData) => {
+      try {
+        const response = await fetch('http://localhost:3000/addOrder', { 
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(orderData)
+        });
+    
+        if (!response.ok) {
+          throw new Error(`Order submission failed: ${response.status}`);
+        }
+    
+        const data = await response.json(); 
+        return { success: true, orderId: data.orderId }; 
+    
+      } catch (error) {
+        console.error('Error submitting order:', error);
+        throw error; // Re-throw to allow for error handling in the handleSubmit
+      }
+  }
+
 
     return (
-        <div>
-          <form>
-            <h2>Shipping Information</h2>
-            <div>
-              <label htmlFor="fullName">Full Name</label>
-              <input
-                type ="text"
-                id="fullName"
-                value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
-              />
+        <div className="checkout-page-container">
+          <div className="checkout-flex-container"></div>
+            <div className="checkout-flex_item checkout-form">
+              <form onsubmit={handleSubmit}>
+                <h2>Shipping Information</h2>
+                <div>
+                  <label htmlFor="fullName">Full Name</label>
+                  <input
+                    type ="text"
+                    id="fullName"
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
+                  />
+                </div>
+                <div>
+                  <label htmlFor="Email">Email Address:</label>
+                  <input
+                    type ="email"
+                    id="email"
+                    value={email}
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                      validateEmail(e.target.value);
+                    }}
+                  />
+                  {emailError && <p style={{color: 'red '}}>{emailError}</p>}
+                </div>
+                <div>
+                  <label htmlFor="Phone">Phone Number:</label>
+                  <input
+                    type ="tel"
+                    id="phone"
+                    value={phone}
+                    onChange={(e) => {
+                      setPhone(e.target.value);
+                      validatePhone(e.target.value);
+                    }}
+                  />
+                  {phoneError && <p style={{color:'red' }}>{phoneError}</p>}
+                </div>
+                <div>
+                  <label htmlFor="addressLine1">Address Line 1:</label>
+                  <input
+                    type ="text"
+                    id="addressLine1"
+                    value={addressLine1}
+                    onChange={(e) => setAddressLine1(e.target.value)}
+                  />
+                </div>
+                <div>
+                  <label htmlFor="addressLine2">Address Line 2:</label>
+                  <input
+                    type ="text"
+                    id="addressLine2"
+                    value={addressLine2}
+                    onChange={(e) => setAddressLine2(e.target.value)}
+                  />
+                </div>
+                <div>
+                  <label htmlFor="city">City:</label>
+                  <input
+                    type ="text"
+                    id="city"
+                    value={city}
+                    onChange={(e) => setCity(e.target.value)}
+                  />
+                </div>
+                <div>
+                  <label htmlFor="State">State:</label>
+                  <input
+                    type ="text"
+                    id="state"
+                    value={state}
+                    onChange={(e) => setState(e.target.value)}
+                  />
+                </div>
+                <div>
+                  <label htmlFor="zipCode">Zip Code:</label>
+                  <input
+                    type ="text"
+                    id="zipCode"
+                    value={zipCode}
+                    onChange={(e) => setZipCode(e.target.value)}
+                  />
+                </div>
+              </form>
             </div>
-            <div>
-              <label htmlFor="Email">Email Address:</label>
-              <input
-                type ="email"
-                id="email"
-                value={email}
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                  validateEmail(e.target.value);
-                }}
-              />
-              {emailError && <p style={{color: 'red '}}>{emailError}</p>}
-            </div>
-            <div>
-              <label htmlFor="Phone">Phone Number:</label>
-              <input
-                type ="tel"
-                id="phone"
-                value={phone}
-                onChange={(e) => {
-                  setPhone(e.target.value);
-                  validatePhone(e.target.value);
-                }}
-              />
-              {phoneError && <p style={{color:'red' }}>{phoneError}</p>}
-            </div>
-            <div>
-              <label htmlFor="addressLine1">Address Line 1:</label>
-              <input
-                type ="text"
-                id="addressLine1"
-                value={addressLine1}
-                onChange={(e) => setAddressLine1(e.target.value)}
-              />
-            </div>
-            <div>
-              <label htmlFor="addressLine2">Address Line 2:</label>
-              <input
-                type ="text"
-                id="addressLine2"
-                value={addressLine2}
-                onChange={(e) => setAddressLine2(e.target.value)}
-              />
-            </div>
-            <div>
-              <label htmlFor="city">City:</label>
-              <input
-                type ="text"
-                id="city"
-                value={city}
-                onChange={(e) => setCity(e.target.value)}
-              />
-            </div>
-            <div>
-              <label htmlFor="State">City:</label>
-              <input
-                type ="text"
-                id="state"
-                value={state}
-                onChange={(e) => setState(e.target.value)}
-              />
-            </div>
-            <div>
-              <label htmlFor="zipCode">Zip Code:</label>
-              <input
-                type ="text"
-                id="zipCode"
-                value={zipCode}
-                onChange={(e) => setZipCode(e.target.value)}
-              />
-            </div>
-          </form>
-
-          <div className="order-summary-box">
+            <div className="checkout-flex-item">
+              <div className="order-summary-box">
                 <h2>Order Summary</h2>
                 <div className="order-summary">
                     <ul>
@@ -161,8 +226,11 @@ const CheckoutPage = () => {
                     </ul>
                     <p style={{ fontWeight: 'bold', fontSize: '1.2em' }}>Total: ${total}</p>
                 </div>
+              </div>
+              <button className="submit-button" onClick={(handleSubmit)}>Place Order</button>
             </div>
-        </div> 
+        </div>
+        
     );
 };
 

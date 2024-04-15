@@ -12,6 +12,8 @@ import bookImage from './assets/book_image.jpg'; //import book image
 import Details from './components/Details.js';
 import './App.css'; // Import CSS file
 import CheckoutPage from './components/CheckoutPage.js';
+import { CartProvider } from './components/CartContext.js';
+
 //import { eventWrapper } from '@testing-library/user-event/dist/utils/index.js';
 
 
@@ -48,39 +50,41 @@ const clearCartCount = () => {
 
   return (
     <Router>
-      <div className="app">
-        <nav>
-          <ul className="nav-links">
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/inventory">Products</Link> {/*Chaning text of link to Products instead of inventory*/}
-            </li>
-            <li>
-              <Link to="/orders">Orders</Link>
-            </li>
-            <li className='cart-link'>
-              <Link to ="/cart">Cart<span>({cartCount})</span> {/*Display cart Count*/}</Link> 
-            </li>
-          </ul>
-        </nav>
+      <CartProvider>
+        <div className="app">
+          <nav>
+            <ul className="nav-links">
+              <li>
+                <Link to="/">Home</Link>
+              </li>
+              <li>
+                <Link to="/inventory">Products</Link> {/*Chaning text of link to Products instead of inventory*/}
+              </li>
+              <li>
+                <Link to="/orders">Orders</Link>
+              </li>
+              <li className='cart-link'>
+                <Link to ="/cart">Cart<span>({cartCount})</span> {/*Display cart Count*/}</Link> 
+              </li>
+            </ul>
+          </nav>
 
-        <hr />
+          <hr />
 
-        <Routes>
-          {/* temp commenting out unused links */}
-          {/*<Route path="/dashboard" element={<Dashboard />} />*/}
-          <Route path="/inventory" element={<Inventory />} />
-          <Route path="/orders" element={<Orders />} />
-          {/*<Route path="/sales" element={<Sales />} />*/}
-          <Route path="/cart" element={<Cart cartCount={cartCount} />} /> {/*pass through the cart count */}
-          <Route path="/checkout" element={<CheckoutPage />} />
-          <Route path="/" element={<Home />} />{/*home link*/}
-          <Route path="/books/:id" element={<Details updateCartCount={setCartCount} />} />
+          <Routes>
+            {/* temp commenting out unused links */}
+            {/*<Route path="/dashboard" element={<Dashboard />} />*/}
+            <Route path="/inventory" element={<Inventory />} />
+            <Route path="/orders" element={<Orders />} />
+            {/*<Route path="/sales" element={<Sales />} />*/}
+            <Route path="/cart" element={<Cart cartCount={cartCount} />} /> {/*pass through the cart count */}
+            <Route path="/checkout" element={<CheckoutPage setCartCount={setCartCount} />} /> {/*Passing setCartCount to update cart count*/}
+            <Route path="/" element={<Home />} />{/*home link*/}
+            <Route path="/books/:id" element={<Details updateCartCount={setCartCount} />} />
           
-        </Routes>
-      </div>
+          </Routes>
+        </div>
+      </CartProvider>
     </Router>
   );
 };

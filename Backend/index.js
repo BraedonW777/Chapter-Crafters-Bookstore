@@ -9,6 +9,7 @@ import searchRoute from './Routes/searchRoute.js';
 import session from 'express-session';
 import cartRoute from './Routes/cartRoute.js';
 import { v4 as uuidv4 } from 'uuid';
+import orderRoute from './Routes/orderRoute.js';
 
 const app = express();
 
@@ -44,6 +45,7 @@ app.use(cors({
 app.use('/books', booksRoute);
 app.use('/search', searchRoute);
 app.use('/addToCart', cartRoute);
+app.use('/addOrder', orderRoute);
 
 //Error Handling Midddleware 
 app.use((err, request, response, next) => {
