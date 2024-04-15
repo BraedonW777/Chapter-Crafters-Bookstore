@@ -5,7 +5,7 @@ import { useLocation } from 'react-router-dom';
 import './CheckoutPage.css';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from './CartContext.js'; //used for managing the cart state 
-
+import axios from 'axios';
 
 const CheckoutPage = ({ setCartCount }) => {
     const [isOrderSucccessful, setIsOrderSuccessful] = useState(false);
@@ -86,50 +86,56 @@ const CheckoutPage = ({ setCartCount }) => {
       total
     };
     console.log("Order Submitted (Backend interaction pending):", orderData);
-    try { 
-      const response = await sendOrdertoBackend(orderData);
+    try {
+      const response = await sendOrderToBackend(orderData);
       if (response.success) {
-        setIsOrderSuccessful(true);
-        alert('Thank you for your order! A detailed email will be sent to the email address provided.');
         clearCart();
         setCartCount(0);
-        navigate('/');
+        setIsOrderSuccessful(true);
+        alert('Thank you for your order! A detailed summary will be sent to the email provided');
+        navigate('/')
       } else {
         console.error('Order submission Failed:', response);
       }
-    }catch (error) {
-        console.error("Error submitting order:", error);
-      }
-    };
-    const sendOrdertoBackend = async (orderData) => {
-      try {
-        const response = await fetch('http://localhost:3000/addOrder', { 
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(orderData)
-        });
-    
-        if (!response.ok) {
-          throw new Error(`Order submission failed: ${response.status}`);
-        }
-    
-        const data = await response.json(); 
-        return { success: true, orderId: data.orderId }; 
-    
-      } catch (error) {
-        console.error('Error submitting order:', error);
-        throw error; // Re-throw to allow for error handling in the handleSubmit
-      }
-  }
+    } catch (error) {
+      console.error("Error submitting order:", error);
+    }
+  };
 
+  const sendOrderToBackend = async (orderData) => {
+    try {
+      const response = await axios.post('http://localhost:3000/addOrder', orderData, {
+        withCredentials: true, // Include only if necessary 
+        headers: {
+          'Content-Type':'application/json'
+        }
+      });
+
+      if (response.status !== 200 && response.status !== 201) {
+        console.log(response.ok);
+        throw new Error(`Order submission failed: ${response.status}`);
+      }
+
+      const responseText = await response.text();
+      try {
+        const data = JSON.parse(responseText);
+        console.log(data);
+        return {success: true, orderId: data.orderId};
+      } catch (error) {
+        console.error('Error parsing JSON:', error);
+        throw error;
+      }
+    } catch (error) {
+      console.error('Error submitting order:', error);
+      throw error; 
+    }
+  };
 
     return (
         <div className="checkout-page-container">
           <div className="checkout-flex-container"></div>
             <div className="checkout-flex_item checkout-form">
-              <form onsubmit={handleSubmit}>
+              <form onSubmit={handleSubmit}>
                 <h2>Shipping Information</h2>
                 <div>
                   <label htmlFor="fullName">Full Name</label>
