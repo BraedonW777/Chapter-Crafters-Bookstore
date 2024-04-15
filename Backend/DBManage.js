@@ -101,8 +101,6 @@ app.post('/login', function(req, res)
 
 
 
-
-
 app.listen(80);
 
 
@@ -112,52 +110,6 @@ const fs = require('fs');
 exports.databaseValidate = {
   createTables: ('./bookstore.db') => {
     const dbExists = existsSync('./bookstore.db'); // Check for file existence
-
-    if (!dbExists) { // If the database does not exist
-      const db = new sqlite3.Database('./bookstore.db', sqlite3.OPEN_CREATE | sqlite3.OPEN_READWRITE, (err) => { // Create the database file
-        if (err) {
-          console.error('Error creating database:', err.message);
-        } else {
-          console.log('Created bookstore database');
-        } 
-    });
-    },
-    
-    if (dbExists) {
-      function validateTableName(Orders) {
-        const regex = /^[a-zA-Z_][a-zA-Z0-9_]*$/; // Allow alphanumeric characters and underscores
-        return regex.test(Users);
-      }
-      function validateTableName(Books) {
-        const regex = /^[a-zA-Z_][a-zA-Z0-9_]*$/; // Allow alphanumeric characters and underscores
-        return regex.test(Books);
-      }
-      function validateTableName(Authors) {
-        const regex = /^[a-zA-Z_][a-zA-Z0-9_]*$/; // Allow alphanumeric characters and underscores
-        return regex.test(Authors);
-      }
-      function validateTableName(Genre) {
-        const regex = /^[a-zA-Z_][a-zA-Z0-9_]*$/; // Allow alphanumeric characters and underscores
-        return regex.test(Genre);
-      }
-      function validateTableName(BookCategories) {
-        const regex = /^[a-zA-Z_][a-zA-Z0-9_]*$/; // Allow alphanumeric characters and underscores
-        return regex.test(BookCategories);
-      }
-      function validateTableName(Inventory) {
-        const regex = /^[a-zA-Z_][a-zA-Z0-9_]*$/; // Allow alphanumeric characters and underscores
-        return regex.test(Inventory);
-      }
-      function validateTableName(Cart) {
-        const regex = /^[a-zA-Z_][a-zA-Z0-9_]*$/; // Allow alphanumeric characters and underscores
-        return regex.test(Cart);
-      }
-    }else {
-      console.log('Database already exists');
-    }
-    db.close(); //Close connestion after creation
-    };
-
 
     const db = new sqlite3.Database('./bookstore.db', sqlite3.OPEN_READWRITE, (err) => {
       if (err) {
@@ -174,16 +126,16 @@ exports.databaseValidate = {
         cart_id INTEGER UNIQUE,
         email VARCHAR(100),
         Fname VARCHAR(255),
-			  Lname VA4CHAR(255),
-				AddrLine1 VARCHAR(255),
-				AddrLine2 VRCHAR(255),
-				AddrCity VARCHAR(255),
+        Lname VA4CHAR(255),
+				  AddrLine1 VARCHAR(255),
+				  AddrLine2 VRCHAR(255),
+				  AddrCity VARCHAR(255),
         AddrState ENUM('CHOOSE STATE', 'ADD LIST') DEFAULT 'CHOOSE STATE',
-				AddrZip1 INTEGER(5),
-				AddrZip2 INTEGER(4),
-				Status ENUM('Processing', 'Confirmed', 'Fulfilling', 'Shipped', 'Delivered', 'Cancelled'),
-				PRIMARY KEY order_id AUTOINCREMENT,
-				FOREIGN KEY (cart_id) REFERENCES Cart(cart_id),
+				  AddrZip1 INTEGER(5),
+				  AddrZip2 INTEGER(4),
+				  Order_status ENUM('Processing', 'Confirmed', 'Fulfilling', 'Shipped', 'Delivered', 'Cancelled'),
+				  PRIMARY KEY order_id AUTOINCREMENT,
+				  FOREIGN KEY (cart_id) REFERENCES Cart(cart_id),
       );`,
 
       // Sets variable for Books Table Checking
@@ -192,7 +144,7 @@ exports.databaseValidate = {
         title VARCHAR(255) UNIQUE,
         author_id INTEGER,
         isbn VARCHAR(13) UNIQUE,
-        publication_year INTEGER,
+        publication_year INTEGER(4),
         description VARCHAR(255),
         FOREIGN KEY (author_id) REFERENCES Authors(author_id)
       );`,
@@ -237,18 +189,31 @@ exports.databaseValidate = {
         user_id INTEGER PRIMARY KEY,
         cart_id INTEGER,
       );`,
+
       // Sets variable for Cart Table Checking
       // user_cart_line is a composite number concantonated from Users(user_id)+Cart(cart_id)+'cart item line'
       Cart: `CREATE TABLE IF NOT EXISTS Cart (
         cart_id INTEGER PRIMARY KEY AUTOINCREMENT,
         user_cart_line INTEGER,
         inventory_id INTEGER,
-				timeAdded TIMESTAMP,
-				timeRemoved TIMESTAMP,
+				  timeAdded TIMESTAMP,
+				  timeRemoved TIMESTAMP,
         FOREIGN KEY (inventory_id) REFERENCES Inventory(inventory_id),
         FOREIGN KEY (user_id) REFERENCES Users(user_id)
       );`,
     };
+
+
+
+    if (!dbExists) { // If the database does not exist
+      const db = new sqlite3.Database('./bookstore.db', sqlite3.OPEN_CREATE | sqlite3.OPEN_READWRITE, (err) => { // Create the database file
+        if (err) {
+          console.error('Error creating database:', err.message);
+        } else {
+          console.log('Created bookstore database');
+        } 
+    });
+    },
 
     db.serialize(() => {
       try {
@@ -295,6 +260,102 @@ exports.databaseValidate = {
       }
     });
   };
+
+
+// DB data validation below
+    
+    if (dbExists) {
+      function validateTableName(Orders) {
+        const regex = /^[a-zA-Z][a-zA-Z0-9]*$/; // Allow alphanumeric characters
+        return regex.test(Users);
+      }
+      function valOrderEmail
+      function valOrderFname
+      function valOrderLname
+      function valOrderAddrLine1
+      function valOrderAddrLine2
+      function valOrderAddrCity
+      function valOrderAddrState
+      function valOrderAddrZip1
+      function valOrderAddrZip2
+      function valOrderOrderStatus
+
+      function validateTableName(Books) {
+        const regex = /^[a-zA-Z][a-zA-Z0-9]*$/; // Allow alphanumeric characters
+        return regex.test(Books);
+      }
+
+      function valBooksTitle
+      function valBooksISBN
+      function valBooksPublicaitonYear
+      function valBooksDescription
+
+      function validateTableName(Authors) {
+        const regex = /^[a-zA-Z][a-zA-Z0-9]*$/; // Allow alphanumeric characters
+        return regex.test(Authors);
+      }
+
+      function valAuthorsFirstName
+      function valAuthorsMiddleName
+      function valAuthorsLastName
+
+      function validateTableName(Genre) {
+        const regex = /^[a-zA-Z][a-zA-Z0-9]*$/; // Allow alphanumeric characters
+        return regex.test(Genre);
+      }
+
+      function valGenreName
+
+      function validateTableName(BookCategories) {
+        const regex = /^[a-zA-Z][a-zA-Z0-9]*$/; // Allow alphanumeric characters
+        return regex.test(BookCategories);
+      }
+
+      function valBooksBookID
+         //check if each BookCategories[book_id] correlates to Books[Book_id]
+      function valBooksGenre_ID
+         //check if each BookCategories[genre_id] correlates to Genre[genre_id]
+         //load all errors into an index
+         //iterate through errored index to remove lines where errors exist from reverse order
+      function val
+      function val
+      function val
+      function val
+      function val
+      function val
+
+      function validateTableName(Inventory) {
+        const regex = /^[a-zA-Z][a-zA-Z0-9]*$/; // Allow alphanumeric characters
+        return regex.test(Inventory);
+      }
+
+      function val
+      function val
+      function val
+      function val
+      function val
+      function val
+      function val
+
+      function validateTableName(Cart) {
+        const regex = /^[a-zA-Z][a-zA-Z0-9]*$/; // Allow alphanumeric characters
+        return regex.test(Cart);
+      }
+
+      function val
+      function val
+      function val
+      function val
+      function val
+      function val
+      function val
+      function val
+
+    }else {
+      console.log('Database already exists');
+    }
+    db.close(); //Close connestion after creation
+    };
 
 // Above code will be migrated to ./models/databasecreation
 // date and time of migration: 
