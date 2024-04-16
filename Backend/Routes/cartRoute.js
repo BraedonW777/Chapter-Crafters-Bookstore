@@ -8,7 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 
 const router = express.Router();
-let newCartItem = [];
+let CartItem = [];
 
 //route for Get All books in cart
 // Route to get all items in the cart

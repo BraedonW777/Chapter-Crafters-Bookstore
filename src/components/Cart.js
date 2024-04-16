@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './Cart.css';
+import { useCart } from './CartContext.js'; //used for managing the cart state 
 
 const Cart = ({cartCount}) => {
     const [cartItems, setCartItems] = useState([]);

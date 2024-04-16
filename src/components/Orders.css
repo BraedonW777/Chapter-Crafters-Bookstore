@@ -1,0 +1,63 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif; 
+    margin: 0;
+    padding: 20px; 
+}
+
+h2 {
+    margin-bottom: 20px;
+}
+
+/* Order Styles */
+.order-item {
+    display: grid;
+    grid-template-columns: 1fr 2fr; /* Two-column layout */
+    grid-gap: 10px; 
+    border: 1px solid #ddd; 
+    margin-bottom: 20px; 
+    padding: 10px;
+}
+
+.order-details { /* New class for order info section */
+    display: flex; /* Arranges elements vertically */
+    flex-direction: column; /* Stacks elements on top */
+    gap: 5px; /* Spacing between order details */
+}
+
+.customer-name
+.shipping-address
+.state
+.city {
+    order: 0; /* Alight right within the proper container */
+}
+
+.order-id {
+    font-weight: bold;
+}
+
+.items-heading {
+    /* Moved to order-items container */
+    margin-bottom: 5px;
+    font-weight: bold;
+    text-align: right; /* Align right within its container */
+    color: #0066cc;
+}
+
+.order-items-list {
+    margin-top: 10px;
+}
+
+.order-item-detail {
+    font-size: 14px; 
+}
+
+.order-total{
+    font-weight: bold;
+    color: #20822a;
+}
+/* Grid Styles (Alternative to the Table Styles you had) */
+
+/* Styling for Other Elements */
+/* Consider adding styles for your dropdown, loading message, error message, etc. */
+

@@ -17,4 +17,21 @@ router.post('', async (request, response) => {
 
 });
 
+//Get for getting all orders to display in order link
+router.get('', async (request, response) => {
+    try {
+        const order = await Order.find({});
+
+        const structure = {
+            count: order.length,
+            data: order
+        };
+
+        return response.status(202).json(structure);
+    } catch (error) {
+        console.log(error.message);
+        response.status(500).send({ message: error.message });
+    }
+});
+
 export default router;

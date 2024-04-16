@@ -85,24 +85,7 @@ const CheckoutPage = ({ setCartCount }) => {
       items: cartItems,
       total
     };
-    console.log("Order Submitted (Backend interaction pending):", orderData);
-    try {
-      const response = await sendOrderToBackend(orderData);
-      if (response.success) {
-        clearCart();
-        setCartCount(0);
-        setIsOrderSuccessful(true);
-        alert('Thank you for your order! A detailed summary will be sent to the email provided');
-        navigate('/')
-      } else {
-        console.error('Order submission Failed:', response);
-      }
-    } catch (error) {
-      console.error("Error submitting order:", error);
-    }
-  };
-
-  const sendOrderToBackend = async (orderData) => {
+    console.log("Order Submitted here is the orderData:", orderData);
     try {
       const response = await axios.post('http://localhost:3000/addOrder', orderData, {
         withCredentials: true, // Include only if necessary 
@@ -110,26 +93,25 @@ const CheckoutPage = ({ setCartCount }) => {
           'Content-Type':'application/json'
         }
       });
-
-      if (response.status !== 200 && response.status !== 201) {
-        console.log(response.ok);
-        throw new Error(`Order submission failed: ${response.status}`);
-      }
-
-      const responseText = await response.text();
-      try {
-        const data = JSON.parse(responseText);
-        console.log(data);
-        return {success: true, orderId: data.orderId};
-      } catch (error) {
-        console.error('Error parsing JSON:', error);
-        throw error;
+     
+      if (response.status === 201) {
+        console.log("Order submitted successfully");
+        setCartCount(0);
+        setIsOrderSuccessful(true);
+        alert('Thank you for your order! A detailed summary will be sent to the email provided');
+        navigate('/')
+        const clearCart = () => {
+          setCartItems([]);
+          localStorage.removeItems('cartItems');
+        };
+      } else {
+        console.error('Order submission Failed:', response);
       }
     } catch (error) {
-      console.error('Error submitting order:', error);
-      throw error; 
+      console.error("Error submitting order:", error);
     }
   };
+  
 
     return (
         <div className="checkout-page-container">
