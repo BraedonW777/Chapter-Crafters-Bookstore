@@ -53,7 +53,7 @@ class Cart {
         const existingCartItem = await this.getCartItem(cartId, book_id);
 
         if (existingCartItem) {
-            //if the item alrady exists in teh cart, update quantity
+            //if the item alrady exists in the cart, update quantity
             const newQuantity = existingCartItem.quantity + quantity;
             const sql = 'UPDATE Cart_Items SET quantity = ? WHERE cart_id = ? and book_id = ?';
             return new Promise((resolve, reject) => {
