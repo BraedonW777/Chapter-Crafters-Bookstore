@@ -29,7 +29,7 @@ class Search {
         return new Promise((resolve, reject) => {
           const dbConnection = openDB();
           const sql = `SELECT b.title, 
-                              CONCAT(a.first_name, ' ', a.last_name) AS author_fullname,
+                              CONCAT(a.first_name, ' ', a.last_name) AS author_name,
                               g.category AS genre, 
                               i.quantity 
                        FROM Books b
@@ -62,7 +62,7 @@ class Search {
         return new Promise((resolve, reject) => {
           const dbConnection = openDB();
           const sql = `SELECT b.title, 
-                              CONCAT(a.first_name, ' ', a.last_name) As author_fullname,
+                              CONCAT(a.first_name, ' ', a.last_name) As author_name,
                               g.category AS genre, 
                               i.quantity 
                        FROM Books b

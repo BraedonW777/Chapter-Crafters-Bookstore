@@ -10,7 +10,6 @@ import Orders from './components/Orders.js';
 import Cart from './components/Cart.js';
 import bookImage from './assets/book_image.jpg'; //import book image
 import Details from './components/Details.js';
-import Search from './components/Search.js';
 import './App.css'; // Import CSS file
 import CheckoutPage from './components/CheckoutPage.js';
 import { CartProvider } from './components/CartContext.js';
@@ -64,9 +63,6 @@ const clearCartCount = () => {
               <li>
                 <Link to="/orders">Orders</Link>
               </li>
-              <li>
-                <Link to="/search">Search</Link>
-              </li>
               <li className='cart-link'>
                 <Link to ="/cart">Cart<span>({cartCount})</span> {/*Display cart Count*/}</Link> 
               </li>
@@ -80,7 +76,7 @@ const clearCartCount = () => {
             {/*<Route path="/dashboard" element={<Dashboard />} />*/}
             <Route path="/inventory" element={<Inventory />} />
             <Route path="/orders" element={<Orders />} />
-            <Route path="/search" element={<Search />} />
+            {/*<Route path="/sales" element={<Sales />} />*/}
             <Route path="/cart" element={<Cart cartCount={cartCount} />} /> {/*pass through the cart count */}
             <Route path="/checkout" element={<CheckoutPage setCartCount={setCartCount} />} /> {/*Passing setCartCount to update cart count*/}
             <Route path="/" element={<Home />} />{/*home link*/}

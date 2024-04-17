@@ -46,7 +46,6 @@ app.use('/books', booksRoute);
 app.use('/search', searchRoute);
 app.use('/addToCart', cartRoute);
 app.use('/addOrder', orderRoute);
-app.use('/search', searchRoute);
 
 //Error Handling Midddleware 
 app.use((err, request, response, next) => {

@@ -7,9 +7,9 @@ const router = express.Router();
 
 console.log("In searchRoute");
 
-router.get('/title/:searchTerm', async (req, res) => {
+router.get('/title', async (req, res) => {
     try {
-        const searchTerm = req.params.searchTerm;
+        const searchTerm = req.query.q;
 
         //Input Validation
         if (!searchTerm) {
@@ -29,12 +29,12 @@ router.get('/title/:searchTerm', async (req, res) => {
     }
 })
 
-router.get('/genre/:searchGenre', async (req, res) => {
+router.get('/genre', async (req, res) => {
     console.log('inside get genre router');
     try {
         console.log('inside get genre try block');
-        console.log('Query paramters: ', req.params);
-        const searchGenre = req.params.searchGenre;
+        console.log('Query paramters: ', req.query);
+        const searchGenre = req.query.genre;
         console.log(searchGenre);
 
         //Input Validation
@@ -55,12 +55,12 @@ router.get('/genre/:searchGenre', async (req, res) => {
     }
 })
 
-router.get('/author/:searchAuthor', async (req, res) => {
+router.get('/author', async (req, res) => {
     console.log('inside get author search router');
     try {
         console.log('inside get author search try block');
-        console.log('Query paramters: ', req.params);
-        const searchAuthor = req.params.searchAuthor;
+        console.log('Query paramters: ', req.query);
+        const searchAuthor = req.query.author;
         console.log(searchAuthor);
 
         //Input Validation
