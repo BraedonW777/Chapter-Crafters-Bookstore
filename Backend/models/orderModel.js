@@ -1,5 +1,6 @@
 import { query } from 'express';
 import  openDB  from '../db.js';
+import  Cart  from '../models/cartModel.js';
 
 
 
@@ -29,13 +30,19 @@ class Order {
                  }
                });
       });
-
+      
       for (const item of orderData.items) {
         await db.run(`INSERT INTO order_items (order_id, book_id, quantity, price) VALUES (?, ?, ?, ?)`, 
                      [orderId, item.book_id, item.quantity, item.price]); 
       }
 
+       // delete the cart
+      //console.log('here is orderData.cartID', orderData.item[0].cart_id);
+      //const cartId = orderData.item[0].cart_id;
+      //console.log('here is the cartId before calling delete cart', cartId);
+      //await Cart.deleteCart(cartId);      
       return orderId; 
+
     } catch (error) {
       throw error; 
     }

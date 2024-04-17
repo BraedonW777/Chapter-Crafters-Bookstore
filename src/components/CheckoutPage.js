@@ -22,11 +22,11 @@ const CheckoutPage = ({ setCartCount }) => {
         for (const [key, value] of searchParams.entries()) {
             if (key.startsWith('item')) {
                 items.push(JSON.parse(value));
-            }
+           }
         }
 
         setCartItems(items);
-    }, [location]);
+   }, [location]);
 
     //Calculate total function
     const calculateTotal = () => {
@@ -100,6 +100,7 @@ const CheckoutPage = ({ setCartCount }) => {
         setIsOrderSuccessful(true);
         alert('Thank you for your order! A detailed summary will be sent to the email provided');
         navigate('/')
+        //Using the CartContext.js to empty the cartItems[]
         const clearCart = () => {
           setCartItems([]);
           localStorage.removeItems('cartItems');

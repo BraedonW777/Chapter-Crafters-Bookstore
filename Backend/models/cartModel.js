@@ -145,5 +145,25 @@ class Cart {
         });
     }
 
+    //delete cart by cartID
+    async deleteCart(cartId) {
+        consolelog('afer order is submitted here is the cartID:', cartId)
+        const db = openDB();
+
+        return new Promise((resolve, reject) => {
+            db.serialize(() => {//ensures consistent execution order
+                db.run('DELETE FROM Cart_Items WHERE cart_id = ?', cartId, (err) => {
+                    if (err) return reject(err);
+                    
+                db.run('DELETE FROM Cart WHERE id = ?', cartId, (err) => {
+                    if (err) return reject(err);
+                    resolve();
+                });
+            });
+        });
+    })
+
+    }
+
 }
 export default new Cart();

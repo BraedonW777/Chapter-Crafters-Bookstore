@@ -78,11 +78,12 @@ const Cart = ({cartCount}) => {
             })
             const queryString = queryParams.toString();
             const url = `/checkout?${queryString}`;
-
+            
             navigate(url);
         } else {
             console.log('Checkout canceled');
         }
+        setCartItems([]);
     };
     const handleConfirmOrder = () => {
 

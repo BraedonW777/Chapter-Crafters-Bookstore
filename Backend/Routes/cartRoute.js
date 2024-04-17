@@ -18,7 +18,7 @@ router.get('/', async (request, response) => {
       const cart = await Cart.getCartBySessionId(request.sessionID); 
       
       if (cart === null) {
-        return response.json({ message: 'Cart is Empty!' });
+        return response.json([]);
       }
       // Retrieve all items associated with the cart ID
       const cartItems = await Cart.getCartItems(cart.id);

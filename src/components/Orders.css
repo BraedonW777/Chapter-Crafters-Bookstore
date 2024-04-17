@@ -29,7 +29,7 @@ h2 {
 .shipping-address
 .state
 .city {
-    order: 0; /* Alight right within the proper container */
+    order: 0; /* Align right within the proper container */
 }
 
 .order-id {
