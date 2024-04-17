@@ -97,81 +97,8 @@ app.post('/login', function(req, res)
     ...
   }
 }
-*/
 
-
-
-app.listen(80);
-
-
-const sqlite3 = require('sqlite3').verbose();
-const fs = require('fs');
-
-exports.databaseValidate = {
-  createTables: ('./bookstore.db') => {
-    const dbExists = existsSync('./bookstore.db'); // Check for file existence
-
-    const db = new sqlite3.Database('./bookstore.db', sqlite3.OPEN_READWRITE, (err) => {
-      if (err) {
-        console.error(err.message);
-      } else {
-        console.log('Connected to the bookstore database');
-      }
-    });
-
-    const TablesCreate = {
-      // Sets variable for Orders Table Checking
-      Orders: `CREATE TABLE IF NOT EXISTS Orders (
-        order_id INTEGER PRIMARY KEY AUTOINCREMENT,
-        cart_id INTEGER UNIQUE,
-        email VARCHAR(100),
-        Fname VARCHAR(255),
-        Lname VA4CHAR(255),
-				  AddrLine1 VARCHAR(255),
-				  AddrLine2 VRCHAR(255),
-				  AddrCity VARCHAR(255),
-        AddrState ENUM('CHOOSE STATE', 'ADD LIST') DEFAULT 'CHOOSE STATE',
-				  AddrZip1 INTEGER(5),
-				  AddrZip2 INTEGER(4),
-				  Order_status ENUM('Processing', 'Confirmed', 'Fulfilling', 'Shipped', 'Delivered', 'Cancelled'),
-				  PRIMARY KEY order_id AUTOINCREMENT,
-				  FOREIGN KEY (cart_id) REFERENCES Cart(cart_id),
-      );`,
-
-      // Sets variable for Books Table Checking
-      Books: `CREATE TABLE IF NOT EXISTS Books (
-        book_id INTEGER PRIMARY KEY AUTOINCREMENT,
-        title VARCHAR(255) UNIQUE,
-        author_id INTEGER,
-        isbn VARCHAR(13) UNIQUE,
-        publication_year INTEGER(4),
-        description VARCHAR(255),
-        FOREIGN KEY (author_id) REFERENCES Authors(author_id)
-      );`,
-
-      // Sets variable for Authors Table Checking
-      Authors: `CREATE TABLE IF NOT EXISTS Authors (
-        author_id INTEGER PRIMARY KEY AUTOINCREMENT,
-        first_name VARCHAR(50),
-        last_name VARCHAR(50),
-        middle_name VARCHAR(50)
-      );`,
-
-      // Sets variable for Genre Table Checking
-      Genre: `CREATE TABLE IF NOT EXISTS Genre (
-        genre_id INTEGER PRIMARY KEY AUTOINCREMENT,
-        genreName VARCHAR(50) UNIQUE
-      );`,
-
-      // Sets variable for BookCategories Table Checking
-      BookCategories: `CREATE TABLE IF NOT EXISTS BookCategories (
-        book_id INTEGER,
-        genre_id INTEGER,
-        PRIMARY KEY (book_id, genre_id),
-        FOREIGN KEY (book_id) REFERENCES Books(book_id),
-        FOREIGN KEY (genre_id) REFERENCES Genre(genre_id)
-      );`,
-
+      /* cut to narrow scope.
       // Sets variable for Inventory Table Checking
       Inventory: `CREATE TABLE IF NOT EXISTS Inventory (
         inventory_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -190,20 +117,121 @@ exports.databaseValidate = {
         cart_id INTEGER,
       );`,
 
-      // Sets variable for Cart Table Checking
-      // user_cart_line is a composite number concantonated from Users(user_id)+Cart(cart_id)+'cart item line'
-      Cart: `CREATE TABLE IF NOT EXISTS Cart (
-        cart_id INTEGER PRIMARY KEY AUTOINCREMENT,
-        user_cart_line INTEGER,
-        inventory_id INTEGER,
-				  timeAdded TIMESTAMP,
-				  timeRemoved TIMESTAMP,
-        FOREIGN KEY (inventory_id) REFERENCES Inventory(inventory_id),
-        FOREIGN KEY (user_id) REFERENCES Users(user_id)
+
+
+// Open the database connection
+const db = new sqlite3.Database('./your_database.db', (err) => {
+  if (err) {
+    console.error('Error opening database:', err.message);
+    return;
+  }
+
+  // Specify the table to loop through
+  const tableName = 'your_table_name';
+
+  // Execute a SELECT query
+  db.all(`SELECT * FROM ${tableName}`, (err, rows) => {
+    if (err) {
+      console.error('Error retrieving data:', err.message);
+    } else {
+      // Loop through each row
+      for (const row of rows) {
+        console.log('Row:', row);
+        // Access individual column values using row object properties (e.g., row.column_name)
+        // Perform operations on each row's data here
+      }
+      console.log('Iterated through all rows in', tableName);
+    }
+  });
+});
+
+// Close the database connection (usually in a finally block)
+db.close((err) => {
+  if (err) {
+    console.error('Error closing database:', err.message);
+  } else {
+    console.log('Database connection closed');
+  }
+});
+
+*/
+
+
+
+app.listen(3000);
+
+
+const sqlite3 = require('sqlite3').verbose();
+const fs = require('fs');
+
+exports.databaseValidate = {
+  createTables: ('./bookstore.db') => {
+    const dbExists = existsSync('./bookstore.db'); // Check for file existence
+
+    const db = new sqlite3.Database('./bookstore.db', sqlite3.OPEN_READWRITE, (err) => {
+      if (err) {
+        console.error(err.message);
+      } else {
+        console.log('Connected to the bookstore database');
+      }
+    });
+
+    const TablesCreate = {
+      // Sets variable for Source Ordering
+      ManOrders: `CREATE TABLE IF NOT EXISTS ManOrders (
+        ManufacturerName VARCHAR (255),
+        ManufacturerEmail VARVCHAR (255),
+        ItemOrder VARCHAR(255), 
+      );`, //ItemOrder will consist of the manufacturers item identifier then the item amount in csv format
+
+      // Sets variable for Orders Table Checking
+      Orders: `CREATE TABLE IF NOT EXISTS Orders (
+        order_id INTEGER PRIMARY KEY AUTOINCREMENT,
+        email VARCHAR(100),
+        Fname VARCHAR(255),
+        Lname VA4CHAR(255),
+				AddrLine1 VARCHAR(255),
+				AddrCity VARCHAR(255),
+        AddrState ENUM('CHOOSE STATE', 'ADD LIST') DEFAULT 'CHOOSE STATE',
+				AddrZip INTEGER(5),
+				Order_status ENUM('Processing', 'Confirmed', 'Fulfilling', 'Shipped', 'Delivered', 'Cancelled', 'Returned'),
+				PRIMARY KEY order_id AUTOINCREMENT,
+      );`,
+
+      // Sets variable for Books Table Checking
+      Books: `CREATE TABLE IF NOT EXISTS Books (
+        book_id INTEGER PRIMARY KEY AUTOINCREMENT,
+        title VARCHAR(255) UNIQUE,
+        author_id INTEGER,
+        isbn VARCHAR(13) UNIQUE,
+        publication_year INTEGER(4),
+        description VARCHAR(255),
+        FOREIGN KEY (author_id) REFERENCES Authors(author_id)
+      );`,
+
+      // Sets variable for Authors Table Checking
+      Authors: `CREATE TABLE IF NOT EXISTS Authors (
+        author_id INTEGER PRIMARY KEY AUTOINCREMENT,
+        firstName VARCHAR(50),
+        lastName VARCHAR(50),
+        middleName VARCHAR(50)
+      );`,
+
+      // Sets variable for Genre Table Checking
+      Genre: `CREATE TABLE IF NOT EXISTS Genre (
+        genre_id INTEGER PRIMARY KEY AUTOINCREMENT,
+        genreName VARCHAR(50) UNIQUE
+      );`,
+
+      // Sets variable for BookCategories Table Checking
+      BookCategories: `CREATE TABLE IF NOT EXISTS BookCategories (
+        book_id INTEGER,
+        genre_id INTEGER,
+        PRIMARY KEY (book_id, genre_id),
+        FOREIGN KEY (book_id) REFERENCES Books(book_id),
+        FOREIGN KEY (genre_id) REFERENCES Genre(genre_id)
       );`,
     };
-
-
 
     if (!dbExists) { // If the database does not exist
       const db = new sqlite3.Database('./bookstore.db', sqlite3.OPEN_CREATE | sqlite3.OPEN_READWRITE, (err) => { // Create the database file
@@ -218,39 +246,29 @@ exports.databaseValidate = {
     db.serialize(() => {
       try {
         // Create tables sequentially
-        for (const Users in TablesCreate) {
-          db.run(TablesCreate[Users]);
-          console.log(`Confirmed ${Users} table`);
+        for (const ManOrders in TablesCreate) {
+          db.run(TablesCreate[ManOrders]);
+          console.log(`Confirmed ${ManOrders} table`);
         }
-        console.log('Tables created (if not already existed)');
+        for (const Orders in TablesCreate) {
+          db.run(TablesCreate[Orders]);
+          console.log(`Confirmed ${Orders} table`);
+        }
         for (const Books in TablesCreate) {
           db.run(TablesCreate[Books]);
           console.log(`Confirmed ${Books} table`);
         }
-        console.log('Tables created (if not already existed)');
         for (const Authors in TablesCreate) {
           db.run(TablesCreate[Authors]);
           console.log(`Confirmed ${Authors} table`);
         }
-        console.log('Tables created (if not already existed)');
         for (const Genre in TablesCreate) {
           db.run(TablesCreate[Genre]);
           console.log(`Confirmed ${Genre} table`);
         }
-        console.log('Tables created (if not already existed)');
         for (const BookCategories in TablesCreate) {
           db.run(TablesCreate[BookCategories]);
           console.log(`Confirmed ${BookCategories} table`);
-        }
-        console.log('Tables created (if not already existed)');
-        for (const Inventory in TablesCreate) {
-          db.run(TablesCreate[Inventory]);
-          console.log(`Confirmed ${Inventory} table`);
-        }
-        console.log('Tables created (if not already existed)');
-        for (const Cart in TablesCreate) {
-          db.run(TablesCreate[Cart]);
-          console.log(`Confirmed ${Cart} table`);
         }
         console.log('Tables created (if not already existed)');
       } catch (error) {
