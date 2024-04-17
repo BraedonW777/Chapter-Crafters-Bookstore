@@ -1,0 +1,36 @@
+
+.inventory-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.inventory-container { 
+    display: flex;
+    flex-direction: row; /* Two columns, details column twice as wide*/
+    gap: 10px;
+  }
+
+  h1{
+    margin-bottom: 0px;
+  }
+  
+ul {
+    margin-top: 0px; /* Remove margin */
+    list-style: none;  /* Remove default bullet points */
+    padding: 0px;  /* Remove default padding */
+    width: 50%;  /* Set width to 50% */
+    border: 1px solid #ddd; /* Optional border */
+    padding: 10px; /* Optional padding */ 
+}
+.book-container {
+    display: grid;
+    grid-template-columns: 1fr 2fr;  /* Adjust the ratio as needed */
+    gap: 5px;
+    border: 1px solid #ddd; 
+    padding: 5px;
+  }
+  
+  .book-label {
+    font-weight: bold; /* Example: make labels slightly bold */
+  }
+  

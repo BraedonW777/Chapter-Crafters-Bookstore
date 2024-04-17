@@ -45,7 +45,7 @@ class Book {
     async find() { // Function to fetch all books
         const db = openDB();// Get the DB oject 
         return new Promise((resolve, reject) => { 
-            db.all('SELECT * FROM Books', (err, rows) => {
+            db.all('SELECT b.*, i.quantity FROM Books b JOIN Inventory i ON b.book_id = i.book_id', (err, rows) => {
                 if (err) {
                     console.error("Error in Book.find():", err);
                     reject(err);

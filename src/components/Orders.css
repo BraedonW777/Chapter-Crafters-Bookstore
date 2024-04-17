@@ -9,27 +9,44 @@ h2 {
     margin-bottom: 20px;
 }
 
+.orders-container {
+    width: 100%;
+    border: none;
+   
+}
+
+.order-list {
+    border: none;
+    width: max-content;
+}
+
 /* Order Styles */
 .order-item {
     display: grid;
-    grid-template-columns: 1fr 2fr; /* Two-column layout */
+    grid-template-columns: 1fr 2fr;  /* Two-column layout */
+    width: max-content;
     grid-gap: 10px; 
     border: 1px solid #ddd; 
     margin-bottom: 20px; 
     padding: 10px;
+    flex-grow: 1
 }
 
 .order-details { /* New class for order info section */
-    display: flex; /* Arranges elements vertically */
-    flex-direction: column; /* Stacks elements on top */
-    gap: 5px; /* Spacing between order details */
+    display: grid; /* Arranges elements vertically */
+    grid-template-columns: 1fr 2fr; /* Stacks elements on top */
+    width: 100%;
+    grid-gap: 5px; /* Spacing between order details */
+    border: none;
+    flex-grow: 1;
+    
 }
 
 .customer-name
 .shipping-address
 .state
 .city {
-    order: 0; /* Align right within the proper container */
+    order: 0; /* Alight right within the proper container */
 }
 
 .order-id {
@@ -45,19 +62,21 @@ h2 {
 }
 
 .order-items-list {
+    width: max-content;
     margin-top: 10px;
 }
 
 .order-item-detail {
     font-size: 14px; 
+    width: max-content;
 }
 
 .order-total{
     font-weight: bold;
     color: #20822a;
 }
-/* Grid Styles (Alternative to the Table Styles you had) */
+  
 
-/* Styling for Other Elements */
-/* Consider adding styles for your dropdown, loading message, error message, etc. */
+  
+
 

@@ -89,7 +89,7 @@ const Details = ({ match, updateCartCount }) => {
           min="1"
           value={quantity}
           onChange={(e) => setQuantity(parseInt(e.target.value, 10) || 1)}
-          class="input"
+          className="input"
           />
           <button className="button" onClick={handleAddToCart}>
             Add to Cart {(cartCount)}{/*Display cart Count*/}
