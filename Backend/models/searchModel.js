@@ -28,7 +28,7 @@ class Search {
     async searchByGenre(searchGenre) {
         return new Promise((resolve, reject) => {
           const dbConnection = openDB();
-          const sql = `SELECT b.title, i.cost,
+          const sql = `SELECT b.title, b.book_id, i.cost,
                               CONCAT(a.first_name, ' ', a.last_name) AS author_fullname,
                               g.category AS genre, 
                               i.quantity 
@@ -61,7 +61,7 @@ class Search {
 
         return new Promise((resolve, reject) => {
           const dbConnection = openDB();
-          const sql = `SELECT b.title, i.cost,
+          const sql = `SELECT b.title, b.book_id, i.cost,
                               CONCAT(a.first_name, ' ', a.last_name) As author_fullname,
                               g.category AS genre, 
                               i.quantity 
