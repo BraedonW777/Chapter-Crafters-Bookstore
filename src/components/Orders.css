@@ -15,8 +15,9 @@ h2 {
    
 }
 
-.order-list {
-    border: none;
+.orders-list {
+   border: none;
+    
     width: max-content;
 }
 

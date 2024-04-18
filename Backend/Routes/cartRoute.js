@@ -85,6 +85,21 @@ router.delete('/:book_id', async (request, response) => {
         }
     })
 
+//route to delete cart by cartID -BW
+router.delete('/:cartId', async (req, res) => {
+    console.log("Delete cart by Cart ID route");
+    try {
+        const { cartId } = req.params.cartId;
+        console.log("captured cartID:", cartId);
+        // Call the deleteCart method from the Cart model to delete the cart
+        await Cart.deleteCart(cartId);
+        res.status(200).json({ message: 'Cart deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting cart:', error);
+        res.status(500).json({ error: 'Failed to delete cart' });
+    }
+});
+    
 
 
 export default router;

@@ -131,7 +131,7 @@ class Cart {
     async deleteByID(book_id) {  
         const db = openDB();// Get the DB oject      
         return new Promise((resolve, reject) => {
-            const sql = 'DELETE FROM cart_items WHERE book_id = ?';
+            const sql = 'DELETE FROM cart_items WHERE cart_id = ?';
             db.run(sql, [book_id], function(err) {
                 if (err) {
                     reject(err); 
@@ -147,22 +147,21 @@ class Cart {
 
     //delete cart by cartID
     async deleteCart(cartId) {
-        consolelog('afer order is submitted here is the cartID:', cartId)
+        console.log('after order is submitted, here is the cartID:', cartId);
         const db = openDB();
-
+    
         return new Promise((resolve, reject) => {
-            db.serialize(() => {//ensures consistent execution order
+            db.serialize(() => {
                 db.run('DELETE FROM Cart_Items WHERE cart_id = ?', cartId, (err) => {
                     if (err) return reject(err);
                     
-                db.run('DELETE FROM Cart WHERE id = ?', cartId, (err) => {
-                    if (err) return reject(err);
-                    resolve();
+                    db.run('DELETE FROM Cart WHERE id = ?', cartId, (err) => {
+                        if (err) return reject(err);
+                        resolve();
+                    });
                 });
             });
         });
-    })
-
     }
 
 }

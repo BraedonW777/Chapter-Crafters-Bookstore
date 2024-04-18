@@ -6,13 +6,16 @@ import './CheckoutPage.css';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from './CartContext.js'; //used for managing the cart state 
 import axios from 'axios';
+//import Cart from './Cart.js';
+
 
 const CheckoutPage = ({ setCartCount }) => {
     const [isOrderSucccessful, setIsOrderSuccessful] = useState(false);
-    const { clearCart } = useCart();
+    const { clearCart, cartItems, setCartItems, cartId, setCartId } = useCart();
     const navigate = useNavigate();
     const location = useLocation();
-    const [cartItems, setCartItems] = useState([]);
+    
+    
 
     useEffect(() => {
         const searchParams = new URLSearchParams(location.search);
@@ -24,8 +27,10 @@ const CheckoutPage = ({ setCartCount }) => {
                 items.push(JSON.parse(value));
            }
         }
+        const retrievedCartId = localStorage.getItem('cartId');
+        setCartId(retrievedCartId);
 
-        setCartItems(items);
+        //setCartItems(items);
    }, [location]);
 
     //Calculate total function
@@ -72,6 +77,7 @@ const CheckoutPage = ({ setCartCount }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     console.log("Form Submitted");
+    //const cartId = cartItems.length > 0 ? cartItems[0].cart_id : null;
     //construct order data
     const orderData = {
       fullName, 
@@ -83,7 +89,8 @@ const CheckoutPage = ({ setCartCount }) => {
       state,
       zipCode,
       items: cartItems,
-      total
+      total,
+      cartId: cartId //pass cartId to order data
     };
     console.log("Order Submitted here is the orderData:", orderData);
     try {
@@ -99,12 +106,10 @@ const CheckoutPage = ({ setCartCount }) => {
         setCartCount(0);
         setIsOrderSuccessful(true);
         alert('Thank you for your order! A detailed summary will be sent to the email provided');
-        navigate('/')
+        
         //Using the CartContext.js to empty the cartItems[]
-        const clearCart = () => {
-          setCartItems([]);
-          localStorage.removeItems('cartItems');
-        };
+        clearCart();
+        navigate('/');
       } else {
         console.error('Order submission Failed:', response);
       }

@@ -10,6 +10,7 @@ const Cart = ({cartCount}) => {
     const [loading, setLoading] = useState(true);
     //LK added to display a cart total amount
     const [total, setTotal] = useState(0); //state variable for the total 
+    const { cartItems: contextCartItems, clearCart, fetchCartData } = useCart(); //get cart items from context
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -28,11 +29,18 @@ const Cart = ({cartCount}) => {
 
         fetchCartItems();
     }, []);
+
+    
     
     //LK added this for calculating the cartTotal
     useEffect(() => {
-        calculateTotal(); // calculate total when cart items change 
-    }, [cartItems]);
+        if (cartItems.length === 0 && loading === false) {
+            // Redirect or show message when cart is empty
+            navigate('/Cart'); 
+        }
+        
+        calculateTotal();
+    }, [cartItems, loading]);
 
     const calculateTotal = () => {
         let totalPrice = 0;
@@ -83,7 +91,12 @@ const Cart = ({cartCount}) => {
         } else {
             console.log('Checkout canceled');
         }
-        setCartItems([]);
+        console.log('Proceed to checkout');
+        //fetchCartId();
+        fetchCartData();
+        clearCart(); // Clear cart when proceeding to checkout
+        setTotal(0); // Reset total to 0
+        
     };
     const handleConfirmOrder = () => {
 
