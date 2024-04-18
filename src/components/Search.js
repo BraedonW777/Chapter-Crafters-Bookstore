@@ -7,6 +7,7 @@ const Search = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [searchCriteria, setSearchCriteria] = useState('title');
     const [searchResults, setSearchResults] = useState([]);
+    const [searchError, setSearchError] = useState(null);
 
     const handleSearch = async () => {
         try {
@@ -14,6 +15,11 @@ const Search = () => {
             setSearchResults(response.data);
         } catch (error) {
             console.error('Error searching:', error);
+            if (error.response && error.response.status === 404) {
+                setSearchError(error.response.data.message);
+            } else {
+                setSearchError('An error occured during the search. Pleaes try again.')
+            }
         }
     };
 
@@ -53,6 +59,8 @@ const Search = () => {
 
         <div class="search-results-container">
             <h2>Search Results</h2> 
+            <div className="search-result-error-message">
+                {searchError}</div>
             <ul>
                 {searchResults.map((result, index) => (
                     <li key={index} className="book-container">
